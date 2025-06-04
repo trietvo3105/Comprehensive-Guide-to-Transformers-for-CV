@@ -1,0 +1,15 @@
+title: Comprehensive Guide to Transformers for Computer Vision Engineers
+description: A comprehensive guide covering transformer theory and applications in computer vision
+theme: jekyll-theme-cayman
+baseurl: "/Comprehensive-Guide-to-Transformers-for-CV"
+url: ""
+github:
+    is_project_page: true
+    repository_url: https://github.com/trietvo3105/Comprehensive-Guide-to-Transformers-for-CV
+markdown: kramdown
+kramdown:
+    input: GFM
+    syntax_highlighter: rouge
+plugins:
+    - jekyll-feed
+    - jekyll-seo-tag
