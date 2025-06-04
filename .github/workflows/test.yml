@@ -1,0 +1,23 @@
+name: Test Environment
+
+on:
+    workflow_dispatch:
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: List directory
+              run: ls -la
+
+            - name: Check Ruby version
+              run: ruby --version
+
+            - name: Check environment
+              run: |
+                  echo "GitHub workspace: $GITHUB_WORKSPACE"
+                  echo "GitHub ref: $GITHUB_REF"
+                  echo "GitHub event name: $GITHUB_EVENT_NAME"
