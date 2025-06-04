@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Setup Instructions | Comprehensive Guide to Transformers for Computer Vision Engineers</title>
+    <link rel="stylesheet" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/css/style.css?v=">
+    <!-- MathJax support for equations -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<!-- Syntax highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<!-- Custom favicon -->
+<link rel="icon" type="image/png" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/images/favicon.png">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Setup Instructions">
+<meta property="og:description" content="A comprehensive guide covering transformer theory and applications in computer vision">
+<meta property="og:url" content="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/setup-instructions.html">
+<meta property="og:site_name" content="Comprehensive Guide to Transformers for Computer Vision Engineers">
+<meta property="og:type" content="website"> 
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Setup Instructions | Comprehensive Guide to Transformers for Computer Vision Engineers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Setup Instructions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A comprehensive guide covering transformer theory and applications in computer vision" />
+<meta property="og:description" content="A comprehensive guide covering transformer theory and applications in computer vision" />
+<link rel="canonical" href="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/setup-instructions.html" />
+<meta property="og:url" content="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/setup-instructions.html" />
+<meta property="og:site_name" content="Comprehensive Guide to Transformers for Computer Vision Engineers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Setup Instructions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A comprehensive guide covering transformer theory and applications in computer vision","headline":"Setup Instructions","url":"https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/setup-instructions.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/">Comprehensive Guide to Transformers for Computer Vision Engineers</a></h1>
+        <nav class="main-nav">
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/">Home</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/comprehensive">Overview</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/transformer-theory">Theory</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/transformer-applications">Applications</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/setup-instructions">Setup</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/hands-on-practice">Practice</a>
+        </nav>
+      </header>
+      <main>
+        <h1 id="setup-instructions-for-vision-transformer-hands-on-practice">Setup Instructions for Vision Transformer Hands-on Practice</h1>
+
+<p>This guide provides detailed setup instructions for working with Vision Transformers (ViT) in different hardware environments. Whether you have access to a GPU or are working with just a CPU, these instructions will help you get started with the hands-on exercises.</p>
+
+<h2 id="option-1-google-colab-recommended-for-users-without-a-gpu">Option 1: Google Colab (Recommended for Users Without a GPU)</h2>
+
+<p>Google Colab provides free access to GPU resources, making it ideal for training and fine-tuning transformer models without local GPU hardware.</p>
+
+<h3 id="setting-up-google-colab">Setting Up Google Colab</h3>
+
+<ol>
+  <li><strong>Access Google Colab</strong>:
+    <ul>
+      <li>Go to <a href="https://colab.research.google.com/">Google Colab</a></li>
+      <li>Sign in with your Google account</li>
+    </ul>
+  </li>
+  <li><strong>Enable GPU Acceleration</strong>:
+    <ul>
+      <li>Click on “Runtime” in the menu</li>
+      <li>Select “Change runtime type”</li>
+      <li>Set “Hardware accelerator” to “GPU”</li>
+      <li>Click “Save”</li>
+    </ul>
+  </li>
+  <li><strong>Verify GPU Access</strong>:
+    <ul>
+      <li>Run the following code to confirm GPU availability:
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"GPU available:"</span><span class="p">,</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"GPU device name:"</span><span class="p">,</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">get_device_name</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"No GPU"</span><span class="p">)</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Install Required Libraries</strong>:
+    <ul>
+      <li>Run the following cell to install the necessary packages:
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">datasets</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">matplotlib</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Import Libraries</strong>:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTFeatureExtractor</span><span class="p">,</span> <span class="n">ViTForImageClassification</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="using-pre-made-notebooks">Using Pre-made Notebooks</h3>
+
+<p>For convenience, we’ve prepared Colab notebooks that you can use directly:</p>
+
+<ol>
+  <li><strong>Fine-tuning ViT on CIFAR-10 with PyTorch Lightning</strong>:
+    <ul>
+      <li>Open <a href="https://colab.research.google.com/github/NielsRogge/Transformers-Tutorials/blob/master/VisionTransformer/Fine_tuning_the_Vision_Transformer_on_CIFAR_10_with_PyTorch_Lightning.ipynb">this notebook</a></li>
+      <li>Make a copy to your Google Drive by clicking “File” &gt; “Save a copy in Drive”</li>
+    </ul>
+  </li>
+  <li><strong>Image Classification with Hugging Face Transformers</strong>:
+    <ul>
+      <li>Open <a href="https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/image_classification.ipynb">this notebook</a></li>
+      <li>Make a copy to your Google Drive by clicking “File” &gt; “Save a copy in Drive”</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="option-2-local-setup-with-cpu">Option 2: Local Setup with CPU</h2>
+
+<p>If you prefer to work locally without GPU acceleration, follow these instructions to set up your environment.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<ul>
+  <li>Python 3.7 or higher</li>
+  <li>pip (Python package installer)</li>
+  <li>Basic familiarity with command line operations</li>
+</ul>
+
+<h3 id="step-1-create-a-virtual-environment">Step 1: Create a Virtual Environment</h3>
+
+<p>Creating a virtual environment helps manage dependencies for different projects.</p>
+
+<p><strong>For Windows</strong>:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a new directory for your project</span>
+<span class="nb">mkdir </span>transformer_practice
+<span class="nb">cd </span>transformer_practice
+
+<span class="c"># Create a virtual environment</span>
+python <span class="nt">-m</span> venv venv
+
+<span class="c"># Activate the virtual environment</span>
+venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+</code></pre></div></div>
+
+<p><strong>For macOS/Linux</strong>:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a new directory for your project</span>
+<span class="nb">mkdir </span>transformer_practice
+<span class="nb">cd </span>transformer_practice
+
+<span class="c"># Create a virtual environment</span>
+python3 <span class="nt">-m</span> venv venv
+
+<span class="c"># Activate the virtual environment</span>
+<span class="nb">source </span>venv/bin/activate
+</code></pre></div></div>
+
+<h3 id="step-2-install-required-packages">Step 2: Install Required Packages</h3>
+
+<p>Install the necessary libraries for working with Vision Transformers:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Upgrade pip</span>
+pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip
+
+<span class="c"># Install PyTorch (CPU version)</span>
+pip <span class="nb">install </span>torch torchvision <span class="nt">--index-url</span> https://download.pytorch.org/whl/cpu
+
+<span class="c"># Install Hugging Face libraries and other dependencies</span>
+pip <span class="nb">install </span>transformers datasets matplotlib jupyter
+</code></pre></div></div>
+
+<h3 id="step-3-create-a-jupyter-notebook">Step 3: Create a Jupyter Notebook</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Start Jupyter Notebook</span>
+jupyter notebook
+</code></pre></div></div>
+
+<p>This will open a browser window. Create a new Python notebook by clicking “New” &gt; “Python 3”.</p>
+
+<h3 id="step-4-basic-vit-example-for-cpu">Step 4: Basic ViT Example for CPU</h3>
+
+<p>Copy and paste the following code into your notebook to verify your setup:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTFeatureExtractor</span><span class="p">,</span> <span class="n">ViTForImageClassification</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+
+<span class="c1"># Download a sample image
+</span><span class="n">url</span> <span class="o">=</span> <span class="s">"http://images.cocodataset.org/val2017/000000039769.jpg"</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">))</span>
+
+<span class="c1"># Load pre-trained ViT model and feature extractor
+</span><span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">ViTFeatureExtractor</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+
+<span class="c1"># Prepare image for the model
+</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+
+<span class="c1"># Make prediction
+</span><span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">logits</span>
+
+<span class="c1"># Get the predicted class
+</span><span class="n">predicted_class_idx</span> <span class="o">=</span> <span class="n">logits</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="n">item</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Predicted class:"</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">id2label</span><span class="p">[</span><span class="n">predicted_class_idx</span><span class="p">])</span>
+
+<span class="c1"># Display the image
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="option-3-local-setup-with-gpu">Option 3: Local Setup with GPU</h2>
+
+<p>If you have a compatible NVIDIA GPU, you can accelerate training and inference significantly.</p>
+
+<h3 id="prerequisites-1">Prerequisites</h3>
+
+<ul>
+  <li>NVIDIA GPU with CUDA support</li>
+  <li><a href="https://developer.nvidia.com/cuda-downloads">NVIDIA CUDA Toolkit</a> installed</li>
+  <li><a href="https://developer.nvidia.com/cudnn">NVIDIA cuDNN</a> installed</li>
+</ul>
+
+<h3 id="step-1-create-a-virtual-environment-1">Step 1: Create a Virtual Environment</h3>
+
+<p>Follow the same steps as in Option 2 to create and activate a virtual environment.</p>
+
+<h3 id="step-2-install-pytorch-with-cuda-support">Step 2: Install PyTorch with CUDA Support</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Upgrade pip</span>
+pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip
+
+<span class="c"># Install PyTorch with CUDA support (example for CUDA 11.8)</span>
+pip <span class="nb">install </span>torch torchvision <span class="nt">--index-url</span> https://download.pytorch.org/whl/cu118
+
+<span class="c"># Install Hugging Face libraries and other dependencies</span>
+pip <span class="nb">install </span>transformers datasets matplotlib jupyter
+</code></pre></div></div>
+
+<h3 id="step-3-verify-gpu-support">Step 3: Verify GPU Support</h3>
+
+<p>Create a new Jupyter notebook and run:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># Check if CUDA is available
+</span><span class="k">print</span><span class="p">(</span><span class="s">"CUDA available:"</span><span class="p">,</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">())</span>
+
+<span class="c1"># Print GPU information
+</span><span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"GPU device name:"</span><span class="p">,</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">get_device_name</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Number of GPUs:"</span><span class="p">,</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">device_count</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h3 id="step-4-run-the-vit-example-with-gpu-support">Step 4: Run the ViT Example with GPU Support</h3>
+
+<p>Modify the example from Option 2 to use GPU acceleration:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTFeatureExtractor</span><span class="p">,</span> <span class="n">ViTForImageClassification</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+
+<span class="c1"># Download a sample image
+</span><span class="n">url</span> <span class="o">=</span> <span class="s">"http://images.cocodataset.org/val2017/000000039769.jpg"</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">))</span>
+
+<span class="c1"># Load pre-trained ViT model and feature extractor
+</span><span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">ViTFeatureExtractor</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+
+<span class="c1"># Move model to GPU if available
+</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">device</span><span class="p">(</span><span class="s">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="c1"># Prepare image for the model
+</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">.</span><span class="n">items</span><span class="p">()}</span>
+
+<span class="c1"># Make prediction
+</span><span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">logits</span>
+
+<span class="c1"># Get the predicted class
+</span><span class="n">predicted_class_idx</span> <span class="o">=</span> <span class="n">logits</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="n">item</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Predicted class:"</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">id2label</span><span class="p">[</span><span class="n">predicted_class_idx</span><span class="p">])</span>
+
+<span class="c1"># Display the image
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="memory-optimization-tips-for-transformer-models">Memory Optimization Tips for Transformer Models</h2>
+
+<p>When working with transformer models, especially on systems with limited resources:</p>
+
+<ol>
+  <li>
+    <p><strong>Reduce Batch Size</strong>: Start with a small batch size (e.g., 4 or 8) and increase gradually if your system can handle it.</p>
+  </li>
+  <li><strong>Use Mixed Precision Training</strong>: If using a GPU with Tensor Cores (NVIDIA Volta, Turing, or Ampere architecture), enable mixed precision training:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">torch.cuda.amp</span> <span class="kn">import</span> <span class="n">autocast</span><span class="p">,</span> <span class="n">GradScaler</span>
+   
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">GradScaler</span><span class="p">()</span>
+   
+<span class="c1"># In training loop
+</span><span class="k">with</span> <span class="n">autocast</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">loss</span>
+   
+<span class="n">scaler</span><span class="p">.</span><span class="n">scale</span><span class="p">(</span><span class="n">loss</span><span class="p">).</span><span class="n">backward</span><span class="p">()</span>
+<span class="n">scaler</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span>
+<span class="n">scaler</span><span class="p">.</span><span class="n">update</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Gradient Accumulation</strong>: Update weights after accumulating gradients from multiple batches:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">accumulation_steps</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># Update weights after this many batches
+</span>   
+<span class="c1"># In training loop
+</span><span class="k">with</span> <span class="n">autocast</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">loss</span> <span class="o">/</span> <span class="n">accumulation_steps</span>
+   
+<span class="n">scaler</span><span class="p">.</span><span class="n">scale</span><span class="p">(</span><span class="n">loss</span><span class="p">).</span><span class="n">backward</span><span class="p">()</span>
+   
+<span class="k">if</span> <span class="p">(</span><span class="n">batch_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">accumulation_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">scaler</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span>
+    <span class="n">scaler</span><span class="p">.</span><span class="n">update</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Model Pruning or Quantization</strong>: For inference, consider using quantized models:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoModelForImageClassification</span>
+   
+<span class="c1"># Load quantized model
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="s">'google/vit-base-patch16-224'</span><span class="p">,</span>
+    <span class="n">quantization_config</span><span class="o">=</span><span class="p">{</span><span class="s">"bits"</span><span class="p">:</span> <span class="mi">8</span><span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues</h2>
+
+<h3 id="out-of-memory-errors">Out of Memory Errors</h3>
+
+<p>If you encounter CUDA out of memory errors:</p>
+<ul>
+  <li>Reduce batch size</li>
+  <li>Use a smaller model variant (e.g., ‘google/vit-base-patch16-224’ instead of ‘google/vit-large-patch16-224’)</li>
+  <li>Enable gradient accumulation</li>
+  <li>Use mixed precision training</li>
+</ul>
+
+<h3 id="slow-training-on-cpu">Slow Training on CPU</h3>
+
+<p>If training is too slow on CPU:</p>
+<ul>
+  <li>Use a smaller dataset for experimentation</li>
+  <li>Reduce the number of training epochs</li>
+  <li>Consider using Google Colab’s free GPU resources</li>
+</ul>
+
+<h3 id="package-installation-issues">Package Installation Issues</h3>
+
+<p>If you encounter issues installing packages:</p>
+<ul>
+  <li>Ensure you’re using the correct version of pip: <code class="language-plaintext highlighter-rouge">pip --version</code></li>
+  <li>Try installing packages one by one to identify problematic dependencies</li>
+  <li>Check for compatibility between PyTorch, CUDA, and your GPU driver version</li>
+</ul>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>After setting up your environment, proceed to the hands-on exercises in the next section. These exercises will guide you through:</p>
+
+<ol>
+  <li>Loading and preprocessing image data</li>
+  <li>Fine-tuning a pre-trained Vision Transformer</li>
+  <li>Evaluating model performance</li>
+  <li>Using the model for inference on new images</li>
+</ol>
+
+<p>Remember that while training on CPU is possible, it will be significantly slower than using a GPU. For complex models or larger datasets, we strongly recommend using Google Colab’s free GPU resources or a local GPU setup if available.</p>
+
+
+      </main>
+      <footer>
+        <p>&copy; 2025. All rights reserved.</p>
+      </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html> 

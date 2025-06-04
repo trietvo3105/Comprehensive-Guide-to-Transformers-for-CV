@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hands-on Practice | Comprehensive Guide to Transformers for Computer Vision Engineers</title>
+    <link rel="stylesheet" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/css/style.css?v=">
+    <!-- MathJax support for equations -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<!-- Syntax highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<!-- Custom favicon -->
+<link rel="icon" type="image/png" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/images/favicon.png">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Hands-on Practice">
+<meta property="og:description" content="A comprehensive guide covering transformer theory and applications in computer vision">
+<meta property="og:url" content="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/hands-on-practice.html">
+<meta property="og:site_name" content="Comprehensive Guide to Transformers for Computer Vision Engineers">
+<meta property="og:type" content="website"> 
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hands-on Practice | Comprehensive Guide to Transformers for Computer Vision Engineers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hands-on Practice" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A comprehensive guide covering transformer theory and applications in computer vision" />
+<meta property="og:description" content="A comprehensive guide covering transformer theory and applications in computer vision" />
+<link rel="canonical" href="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/hands-on-practice.html" />
+<meta property="og:url" content="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/hands-on-practice.html" />
+<meta property="og:site_name" content="Comprehensive Guide to Transformers for Computer Vision Engineers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hands-on Practice" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A comprehensive guide covering transformer theory and applications in computer vision","headline":"Hands-on Practice","url":"https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/hands-on-practice.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/">Comprehensive Guide to Transformers for Computer Vision Engineers</a></h1>
+        <nav class="main-nav">
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/">Home</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/comprehensive">Overview</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/transformer-theory">Theory</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/transformer-applications">Applications</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/setup-instructions">Setup</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/hands-on-practice">Practice</a>
+        </nav>
+      </header>
+      <main>
+        <h1 id="hands-on-practice-with-vision-transformers">Hands-on Practice with Vision Transformers</h1>
+
+<p>This document provides step-by-step exercises and solutions for working with Vision Transformers (ViT) in computer vision tasks. These exercises are designed to be compatible with both Google Colab (recommended for users without a GPU) and local environments.</p>
+
+<h2 id="exercise-1-image-classification-with-pre-trained-vit">Exercise 1: Image Classification with Pre-trained ViT</h2>
+
+<p>In this exercise, you’ll use a pre-trained Vision Transformer model to classify images.</p>
+
+<h3 id="step-1-setup-environment">Step 1: Setup Environment</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Install required libraries
+</span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">matplotlib</span>
+
+<span class="c1"># Import necessary libraries
+</span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTFeatureExtractor</span><span class="p">,</span> <span class="n">ViTForImageClassification</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</code></pre></div></div>
+
+<h3 id="step-2-load-pre-trained-model">Step 2: Load Pre-trained Model</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load pre-trained ViT model and feature extractor
+</span><span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">ViTFeatureExtractor</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+
+<span class="c1"># Move model to GPU if available
+</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">device</span><span class="p">(</span><span class="s">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-3-load-and-process-an-image">Step 3: Load and Process an Image</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Function to load an image from URL
+</span><span class="k">def</span> <span class="nf">load_image_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">))</span>
+
+<span class="c1"># Load a sample image
+</span><span class="n">image_url</span> <span class="o">=</span> <span class="s">"http://images.cocodataset.org/val2017/000000039769.jpg"</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">load_image_from_url</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+
+<span class="c1"># Display the image
+</span><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="step-4-make-predictions">Step 4: Make Predictions</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Prepare image for the model
+</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">.</span><span class="n">items</span><span class="p">()}</span>
+
+<span class="c1"># Make prediction
+</span><span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">logits</span>
+
+<span class="c1"># Get the predicted class
+</span><span class="n">predicted_class_idx</span> <span class="o">=</span> <span class="n">logits</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="n">item</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Predicted class:"</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">id2label</span><span class="p">[</span><span class="n">predicted_class_idx</span><span class="p">])</span>
+
+<span class="c1"># Get top 5 predictions
+</span><span class="n">probabilities</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">functional</span><span class="p">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">top5_prob</span><span class="p">,</span> <span class="n">top5_indices</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">topk</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Display top 5 predictions
+</span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">top5_prob</span><span class="p">,</span> <span class="n">top5_indices</span><span class="p">)):</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"#</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">id2label</span><span class="p">[</span><span class="n">idx</span><span class="p">.</span><span class="n">item</span><span class="p">()]</span><span class="si">}</span><span class="s"> (</span><span class="si">{</span><span class="n">prob</span><span class="p">.</span><span class="n">item</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%)"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="solution-analysis">Solution Analysis</h3>
+
+<p>This exercise demonstrates how to use a pre-trained ViT model for image classification. The model was trained on ImageNet and can recognize 1,000 different classes. The feature extractor handles all the necessary preprocessing, including resizing the image to 224x224 pixels and normalizing the pixel values.</p>
+
+<p>The model’s architecture divides the image into 16x16 patches, processes them through a transformer encoder, and uses the [CLS] token’s output for classification. This approach allows the model to capture global relationships between different parts of the image.</p>
+
+<h2 id="exercise-2-fine-tuning-vit-on-a-custom-dataset">Exercise 2: Fine-tuning ViT on a Custom Dataset</h2>
+
+<p>In this exercise, you’ll fine-tune a pre-trained ViT model on the CIFAR-10 dataset.</p>
+
+<h3 id="step-1-setup-environment-1">Step 1: Setup Environment</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Install required libraries
+</span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">datasets</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">matplotlib</span>
+
+<span class="c1"># Import necessary libraries
+</span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTFeatureExtractor</span><span class="p">,</span> <span class="n">ViTForImageClassification</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AdamW</span><span class="p">,</span> <span class="n">get_linear_schedule_with_warmup</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+</code></pre></div></div>
+
+<h3 id="step-2-load-and-prepare-dataset">Step 2: Load and Prepare Dataset</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load CIFAR-10 dataset
+</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s">"cifar10"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+<span class="c1"># Define class names
+</span><span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">'airplane'</span><span class="p">,</span> <span class="s">'automobile'</span><span class="p">,</span> <span class="s">'bird'</span><span class="p">,</span> <span class="s">'cat'</span><span class="p">,</span> <span class="s">'deer'</span><span class="p">,</span> <span class="s">'dog'</span><span class="p">,</span> <span class="s">'frog'</span><span class="p">,</span> <span class="s">'horse'</span><span class="p">,</span> <span class="s">'ship'</span><span class="p">,</span> <span class="s">'truck'</span><span class="p">]</span>
+
+<span class="c1"># Load feature extractor
+</span><span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">ViTFeatureExtractor</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+
+<span class="c1"># Define image transformations
+</span><span class="n">normalize</span> <span class="o">=</span> <span class="n">transforms</span><span class="p">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">feature_extractor</span><span class="p">.</span><span class="n">image_mean</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">feature_extractor</span><span class="p">.</span><span class="n">image_std</span><span class="p">)</span>
+<span class="n">train_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="p">.</span><span class="n">Compose</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">RandomResizedCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(),</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">normalize</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">val_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="p">.</span><span class="n">Compose</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">normalize</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Define function to preprocess images
+</span><span class="k">def</span> <span class="nf">preprocess_train</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">examples</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_transforms</span><span class="p">(</span><span class="n">image</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="s">"RGB"</span><span class="p">))</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">[</span><span class="s">'img'</span><span class="p">]]</span>
+    <span class="n">examples</span><span class="p">[</span><span class="s">'labels'</span><span class="p">]</span> <span class="o">=</span> <span class="n">examples</span><span class="p">[</span><span class="s">'label'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">examples</span>
+
+<span class="k">def</span> <span class="nf">preprocess_val</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">examples</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">val_transforms</span><span class="p">(</span><span class="n">image</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="s">"RGB"</span><span class="p">))</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">[</span><span class="s">'img'</span><span class="p">]]</span>
+    <span class="n">examples</span><span class="p">[</span><span class="s">'labels'</span><span class="p">]</span> <span class="o">=</span> <span class="n">examples</span><span class="p">[</span><span class="s">'label'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">examples</span>
+
+<span class="c1"># Apply preprocessing
+</span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s">'train'</span><span class="p">].</span><span class="n">with_transform</span><span class="p">(</span><span class="n">preprocess_train</span><span class="p">)</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s">'test'</span><span class="p">].</span><span class="n">with_transform</span><span class="p">(</span><span class="n">preprocess_val</span><span class="p">)</span>
+
+<span class="c1"># Create data loaders
+</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-3-load-pre-trained-model-for-fine-tuning">Step 3: Load Pre-trained Model for Fine-tuning</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load pre-trained model
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="s">'google/vit-base-patch16-224'</span><span class="p">,</span>
+    <span class="n">num_labels</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">id2label</span><span class="o">=</span><span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">class_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)},</span>
+    <span class="n">label2id</span><span class="o">=</span><span class="p">{</span><span class="n">class_names</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
+<span class="p">)</span>
+
+<span class="c1"># Move model to GPU if available
+</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">device</span><span class="p">(</span><span class="s">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-4-define-training-function">Step 4: Define Training Function</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Define training function
+</span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">model</span><span class="p">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">total_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+        <span class="c1"># Get inputs
+</span>        <span class="n">pixel_values</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'labels'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        
+        <span class="c1"># Zero gradients
+</span>        <span class="n">optimizer</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        
+        <span class="c1"># Forward pass
+</span>        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">pixel_values</span><span class="o">=</span><span class="n">pixel_values</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">loss</span>
+        
+        <span class="c1"># Backward pass and optimize
+</span>        <span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">scheduler</span><span class="p">.</span><span class="n">step</span><span class="p">()</span>
+        
+        <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="p">.</span><span class="n">item</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+
+<span class="c1"># Define evaluation function
+</span><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">model</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="c1"># Get inputs
+</span>            <span class="n">pixel_values</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'labels'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            
+            <span class="c1"># Forward pass
+</span>            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">pixel_values</span><span class="o">=</span><span class="n">pixel_values</span><span class="p">)</span>
+            
+            <span class="c1"># Get predictions
+</span>            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">.</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            
+            <span class="c1"># Update statistics
+</span>            <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">).</span><span class="nb">sum</span><span class="p">().</span><span class="n">item</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+</code></pre></div></div>
+
+<h3 id="step-5-train-and-evaluate-the-model">Step 5: Train and Evaluate the Model</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Set training parameters
+</span><span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">5e-5</span><span class="p">)</span>
+<span class="n">total_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span> <span class="o">*</span> <span class="n">num_epochs</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">get_linear_schedule_with_warmup</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="p">,</span> 
+    <span class="n">num_warmup_steps</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+    <span class="n">num_training_steps</span><span class="o">=</span><span class="n">total_steps</span>
+<span class="p">)</span>
+
+<span class="c1"># Training loop
+</span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+    <span class="c1"># Train
+</span>    <span class="n">train_loss</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    
+    <span class="c1"># Evaluate
+</span>    <span class="n">train_accuracy</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    <span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    
+    <span class="c1"># Print statistics
+</span>    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s">:"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"  Train Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"  Train Accuracy: </span><span class="si">{</span><span class="n">train_accuracy</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"  Test Accuracy: </span><span class="si">{</span><span class="n">test_accuracy</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-6-save-the-fine-tuned-model">Step 6: Save the Fine-tuned Model</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Save the model
+</span><span class="n">model</span><span class="p">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s">"./vit-cifar10"</span><span class="p">)</span>
+<span class="n">feature_extractor</span><span class="p">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s">"./vit-cifar10"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Model saved to ./vit-cifar10"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-7-visualize-predictions">Step 7: Visualize Predictions</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Function to visualize predictions
+</span><span class="k">def</span> <span class="nf">visualize_predictions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">num_images</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">model</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_images</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_images</span><span class="p">):</span>
+        <span class="c1"># Get a random image
+</span>        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s">'img'</span><span class="p">].</span><span class="n">convert</span><span class="p">(</span><span class="s">"RGB"</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s">'label'</span><span class="p">]</span>
+        
+        <span class="c1"># Prepare image for the model
+</span>        <span class="n">inputs</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">.</span><span class="n">items</span><span class="p">()}</span>
+        
+        <span class="c1"># Make prediction
+</span>        <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">logits</span>
+        
+        <span class="c1"># Get predicted class
+</span>        <span class="n">predicted_class_idx</span> <span class="o">=</span> <span class="n">logits</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="n">item</span><span class="p">()</span>
+        
+        <span class="c1"># Display image and prediction
+</span>        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s">"True: </span><span class="si">{</span><span class="n">class_names</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s">Pred: </span><span class="si">{</span><span class="n">class_names</span><span class="p">[</span><span class="n">predicted_class_idx</span><span class="p">]</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="p">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Visualize some predictions
+</span><span class="n">visualize_predictions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">[</span><span class="s">'test'</span><span class="p">],</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="solution-analysis-1">Solution Analysis</h3>
+
+<p>This exercise demonstrates how to fine-tune a pre-trained ViT model on a custom dataset (CIFAR-10). The key steps include:</p>
+
+<ol>
+  <li>
+    <p><strong>Data Preparation</strong>: Transforming images to the format expected by the ViT model (224x224 pixels) and applying data augmentation to improve generalization.</p>
+  </li>
+  <li>
+    <p><strong>Model Adaptation</strong>: Modifying the classification head of the pre-trained model to output 10 classes instead of the original 1,000 ImageNet classes.</p>
+  </li>
+  <li>
+    <p><strong>Fine-tuning Strategy</strong>: Using a small learning rate (5e-5) to update the model parameters without drastically changing the pre-trained weights.</p>
+  </li>
+  <li>
+    <p><strong>Evaluation</strong>: Monitoring both training and test accuracy to ensure the model is learning effectively without overfitting.</p>
+  </li>
+</ol>
+
+<p>The fine-tuned model should achieve around 85-90% accuracy on CIFAR-10 after just a few epochs, demonstrating the power of transfer learning with pre-trained Vision Transformers.</p>
+
+<h2 id="exercise-3-attention-visualization-in-vision-transformers">Exercise 3: Attention Visualization in Vision Transformers</h2>
+
+<p>In this exercise, you’ll visualize the attention patterns in a Vision Transformer to understand what the model is focusing on when making predictions.</p>
+
+<h3 id="step-1-setup-environment-2">Step 1: Setup Environment</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Install required libraries
+</span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">matplotlib</span> <span class="n">numpy</span>
+
+<span class="c1"># Import necessary libraries
+</span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTFeatureExtractor</span><span class="p">,</span> <span class="n">ViTForImageClassification</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+</code></pre></div></div>
+
+<h3 id="step-2-load-pre-trained-model-and-image">Step 2: Load Pre-trained Model and Image</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load pre-trained ViT model and feature extractor
+</span><span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">ViTFeatureExtractor</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">,</span> <span class="n">output_attentions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># Move model to GPU if available
+</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">device</span><span class="p">(</span><span class="s">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="c1"># Load a sample image
+</span><span class="n">image_url</span> <span class="o">=</span> <span class="s">"http://images.cocodataset.org/val2017/000000039769.jpg"</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">))</span>
+
+<span class="c1"># Display the image
+</span><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="step-3-extract-attention-maps">Step 3: Extract Attention Maps</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Prepare image for the model
+</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">.</span><span class="n">items</span><span class="p">()}</span>
+
+<span class="c1"># Get model outputs including attention maps
+</span><span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">,</span> <span class="n">output_attentions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+<span class="c1"># Get prediction
+</span><span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">logits</span>
+<span class="n">predicted_class_idx</span> <span class="o">=</span> <span class="n">logits</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="n">item</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Predicted class:"</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">id2label</span><span class="p">[</span><span class="n">predicted_class_idx</span><span class="p">])</span>
+
+<span class="c1"># Extract attention maps
+</span><span class="n">attention_maps</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">attentions</span>  <span class="c1"># This is a tuple of tensors
+</span>
+<span class="c1"># Print attention map shapes
+</span><span class="k">print</span><span class="p">(</span><span class="s">"Number of layers:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">attention_maps</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Attention map shape for first layer:"</span><span class="p">,</span> <span class="n">attention_maps</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-4-visualize-attention-maps">Step 4: Visualize Attention Maps</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">visualize_attention</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">attention_maps</span><span class="p">,</span> <span class="n">layer_idx</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">head_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="s">"""
+    Visualize attention for a specific layer and attention head.
+    
+    Args:
+        image: PIL Image
+        attention_maps: Tuple of attention tensors from model output
+        layer_idx: Index of the transformer layer to visualize
+        head_idx: Index of the attention head to visualize
+    """</span>
+    <span class="c1"># Get attention map for specified layer and head
+</span>    <span class="n">attention</span> <span class="o">=</span> <span class="n">attention_maps</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="n">head_idx</span><span class="p">].</span><span class="n">detach</span><span class="p">().</span><span class="n">cpu</span><span class="p">().</span><span class="n">numpy</span><span class="p">()</span>
+    
+    <span class="c1"># We need to exclude the attention to the CLS token
+</span>    <span class="n">attention</span> <span class="o">=</span> <span class="n">attention</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span>  <span class="c1"># Shape: (num_patches)
+</span>    
+    <span class="c1"># Reshape attention to match image patches
+</span>    <span class="n">num_patches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">attention</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">attention_map</span> <span class="o">=</span> <span class="n">attention</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_patches</span><span class="p">,</span> <span class="n">num_patches</span><span class="p">)</span>
+    
+    <span class="c1"># Resize image to match attention map visualization
+</span>    <span class="n">resized_image</span> <span class="o">=</span> <span class="n">image</span><span class="p">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+    
+    <span class="c1"># Create figure
+</span>    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    
+    <span class="c1"># Plot original image
+</span>    <span class="n">ax1</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">resized_image</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="p">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Original Image"</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    
+    <span class="c1"># Plot attention map
+</span>    <span class="n">ax2</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">attention_map</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'viridis'</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="p">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s">"Attention Map (Layer </span><span class="si">{</span><span class="n">layer_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">, Head </span><span class="si">{</span><span class="n">head_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">)"</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    
+    <span class="c1"># Plot overlay
+</span>    <span class="n">ax3</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">resized_image</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">attention_map</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'viridis'</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="p">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Attention Overlay"</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="p">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Visualize attention for the last layer, first head
+</span><span class="n">visualize_attention</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">attention_maps</span><span class="p">,</span> <span class="n">layer_idx</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">head_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Visualize attention for the last layer, different head
+</span><span class="n">visualize_attention</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">attention_maps</span><span class="p">,</span> <span class="n">layer_idx</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">head_idx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Visualize attention for an earlier layer
+</span><span class="n">visualize_attention</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">attention_maps</span><span class="p">,</span> <span class="n">layer_idx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">head_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-5-visualize-attention-across-all-heads">Step 5: Visualize Attention Across All Heads</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">visualize_all_heads</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">attention_maps</span><span class="p">,</span> <span class="n">layer_idx</span><span class="o">=</span><span class="mi">11</span><span class="p">):</span>
+    <span class="s">"""
+    Visualize attention for all heads in a specific layer.
+    
+    Args:
+        image: PIL Image
+        attention_maps: Tuple of attention tensors from model output
+        layer_idx: Index of the transformer layer to visualize
+    """</span>
+    <span class="c1"># Get attention maps for specified layer
+</span>    <span class="n">attention</span> <span class="o">=</span> <span class="n">attention_maps</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">].</span><span class="n">detach</span><span class="p">().</span><span class="n">cpu</span><span class="p">().</span><span class="n">numpy</span><span class="p">()</span>
+    
+    <span class="c1"># Number of attention heads
+</span>    <span class="n">num_heads</span> <span class="o">=</span> <span class="n">attention</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Create figure
+</span>    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="p">.</span><span class="n">flatten</span><span class="p">()</span>
+    
+    <span class="c1"># Plot attention for each head
+</span>    <span class="k">for</span> <span class="n">head_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">num_heads</span><span class="p">,</span> <span class="mi">12</span><span class="p">)):</span>
+        <span class="c1"># Get attention map for this head (excluding CLS token)
+</span>        <span class="n">head_attention</span> <span class="o">=</span> <span class="n">attention</span><span class="p">[</span><span class="n">head_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span>
+        
+        <span class="c1"># Reshape attention to match image patches
+</span>        <span class="n">num_patches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">head_attention</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">attention_map</span> <span class="o">=</span> <span class="n">head_attention</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_patches</span><span class="p">,</span> <span class="n">num_patches</span><span class="p">)</span>
+        
+        <span class="c1"># Plot
+</span>        <span class="n">axes</span><span class="p">[</span><span class="n">head_idx</span><span class="p">].</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)))</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">head_idx</span><span class="p">].</span><span class="n">imshow</span><span class="p">(</span><span class="n">attention_map</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'viridis'</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">head_idx</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s">"Head </span><span class="si">{</span><span class="n">head_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">head_idx</span><span class="p">].</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s">"Attention Maps for Layer </span><span class="si">{</span><span class="n">layer_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Visualize all heads for the last layer
+</span><span class="n">visualize_all_heads</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">attention_maps</span><span class="p">,</span> <span class="n">layer_idx</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="solution-analysis-2">Solution Analysis</h3>
+
+<p>This exercise demonstrates how to visualize attention patterns in Vision Transformers, providing insights into what the model focuses on when making predictions. Key observations include:</p>
+
+<ol>
+  <li>
+    <p><strong>Different Attention Patterns</strong>: Each attention head learns to focus on different aspects of the image. Some heads might attend to object shapes, while others focus on textures or colors.</p>
+  </li>
+  <li>
+    <p><strong>Layer Progression</strong>: Earlier layers tend to capture more local features, while deeper layers develop more global attention patterns that correspond to semantic concepts.</p>
+  </li>
+  <li>
+    <p><strong>Interpretability</strong>: Attention visualizations can help interpret the model’s decision-making process, showing which parts of the image influenced the classification the most.</p>
+  </li>
+</ol>
+
+<p>These visualizations reveal that Vision Transformers, unlike CNNs, can directly model long-range dependencies in images through their self-attention mechanism, allowing them to capture global context more effectively.</p>
+
+<h2 id="exercise-4-transfer-learning-with-vit-for-custom-image-classification">Exercise 4: Transfer Learning with ViT for Custom Image Classification</h2>
+
+<p>In this exercise, you’ll apply a pre-trained ViT model to a custom image classification task using transfer learning.</p>
+
+<h3 id="step-1-setup-environment-3">Step 1: Setup Environment</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Install required libraries
+</span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">matplotlib</span> <span class="n">datasets</span>
+
+<span class="c1"># Import necessary libraries
+</span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTFeatureExtractor</span><span class="p">,</span> <span class="n">ViTForImageClassification</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AdamW</span><span class="p">,</span> <span class="n">get_linear_schedule_with_warmup</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+</code></pre></div></div>
+
+<h3 id="step-2-load-and-prepare-a-custom-dataset">Step 2: Load and Prepare a Custom Dataset</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load the Flowers dataset
+</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s">"huggan/flowers-102-categories"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+<span class="c1"># Get class names
+</span><span class="n">class_names</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s">'train'</span><span class="p">].</span><span class="n">features</span><span class="p">[</span><span class="s">'label'</span><span class="p">].</span><span class="n">names</span>
+<span class="n">num_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">class_names</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Number of classes: </span><span class="si">{</span><span class="n">num_classes</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="c1"># Load feature extractor
+</span><span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">ViTFeatureExtractor</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+
+<span class="c1"># Define image transformations
+</span><span class="n">normalize</span> <span class="o">=</span> <span class="n">transforms</span><span class="p">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">feature_extractor</span><span class="p">.</span><span class="n">image_mean</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">feature_extractor</span><span class="p">.</span><span class="n">image_std</span><span class="p">)</span>
+<span class="n">train_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="p">.</span><span class="n">Compose</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">RandomResizedCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(),</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">normalize</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">val_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="p">.</span><span class="n">Compose</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+        <span class="n">transforms</span><span class="p">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">normalize</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Define function to preprocess images
+</span><span class="k">def</span> <span class="nf">preprocess_train</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">examples</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_transforms</span><span class="p">(</span><span class="n">image</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="s">"RGB"</span><span class="p">))</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">[</span><span class="s">'image'</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">examples</span>
+
+<span class="k">def</span> <span class="nf">preprocess_val</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="n">examples</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">val_transforms</span><span class="p">(</span><span class="n">image</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="s">"RGB"</span><span class="p">))</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">[</span><span class="s">'image'</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">examples</span>
+
+<span class="c1"># Apply preprocessing
+</span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s">'train'</span><span class="p">].</span><span class="n">with_transform</span><span class="p">(</span><span class="n">preprocess_train</span><span class="p">)</span>
+<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s">'validation'</span><span class="p">].</span><span class="n">with_transform</span><span class="p">(</span><span class="n">preprocess_val</span><span class="p">)</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s">'test'</span><span class="p">].</span><span class="n">with_transform</span><span class="p">(</span><span class="n">preprocess_val</span><span class="p">)</span>
+
+<span class="c1"># Create data loaders
+</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># Smaller batch size for larger images
+</span><span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">val_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+<span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-3-load-pre-trained-model-and-modify-for-transfer-learning">Step 3: Load Pre-trained Model and Modify for Transfer Learning</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load pre-trained model
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="s">'google/vit-base-patch16-224'</span><span class="p">,</span>
+    <span class="n">num_labels</span><span class="o">=</span><span class="n">num_classes</span><span class="p">,</span>
+    <span class="n">id2label</span><span class="o">=</span><span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">class_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_classes</span><span class="p">)},</span>
+    <span class="n">label2id</span><span class="o">=</span><span class="p">{</span><span class="n">class_names</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_classes</span><span class="p">)}</span>
+<span class="p">)</span>
+
+<span class="c1"># Move model to GPU if available
+</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">device</span><span class="p">(</span><span class="s">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="c1"># Freeze the feature extractor parameters
+</span><span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="p">.</span><span class="n">vit</span><span class="p">.</span><span class="n">embeddings</span><span class="p">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">param</span><span class="p">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="bp">False</span>
+    
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>  <span class="c1"># Freeze first 8 layers
+</span>    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="p">.</span><span class="n">vit</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">layer</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">parameters</span><span class="p">():</span>
+        <span class="n">param</span><span class="p">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<h3 id="step-4-define-training-and-evaluation-functions">Step 4: Define Training and Evaluation Functions</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Define training function
+</span><span class="k">def</span> <span class="nf">train_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">model</span><span class="p">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">total_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+        <span class="c1"># Get inputs
+</span>        <span class="n">pixel_values</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'label'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        
+        <span class="c1"># Zero gradients
+</span>        <span class="n">optimizer</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        
+        <span class="c1"># Forward pass
+</span>        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">pixel_values</span><span class="o">=</span><span class="n">pixel_values</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">loss</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">logits</span>
+        
+        <span class="c1"># Backward pass and optimize
+</span>        <span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">scheduler</span><span class="p">.</span><span class="n">step</span><span class="p">()</span>
+        
+        <span class="c1"># Update statistics
+</span>        <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="p">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">).</span><span class="nb">sum</span><span class="p">().</span><span class="n">item</span><span class="p">()</span>
+        
+        <span class="c1"># Print progress
+</span>        <span class="k">if</span> <span class="p">(</span><span class="n">batch_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"  Batch </span><span class="si">{</span><span class="n">batch_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span><span class="si">}</span><span class="s">, Loss: </span><span class="si">{</span><span class="n">loss</span><span class="p">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">),</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+
+<span class="c1"># Define evaluation function
+</span><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">model</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="c1"># Get inputs
+</span>            <span class="n">pixel_values</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'label'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            
+            <span class="c1"># Forward pass
+</span>            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">pixel_values</span><span class="o">=</span><span class="n">pixel_values</span><span class="p">)</span>
+            
+            <span class="c1"># Get predictions
+</span>            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">.</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            
+            <span class="c1"># Update statistics
+</span>            <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">).</span><span class="nb">sum</span><span class="p">().</span><span class="n">item</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+</code></pre></div></div>
+
+<h3 id="step-5-train-and-evaluate-the-model-1">Step 5: Train and Evaluate the Model</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Set training parameters
+</span><span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="p">.</span><span class="n">requires_grad</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">parameters</span><span class="p">()),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">2e-5</span><span class="p">)</span>
+<span class="n">total_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">)</span> <span class="o">*</span> <span class="n">num_epochs</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">get_linear_schedule_with_warmup</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="p">,</span> 
+    <span class="n">num_warmup_steps</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+    <span class="n">num_training_steps</span><span class="o">=</span><span class="n">total_steps</span>
+<span class="p">)</span>
+
+<span class="c1"># Lists to store metrics
+</span><span class="n">train_losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">train_accuracies</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">val_accuracies</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Training loop
+</span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s">:"</span><span class="p">)</span>
+    
+    <span class="c1"># Train
+</span>    <span class="n">train_loss</span><span class="p">,</span> <span class="n">train_accuracy</span> <span class="o">=</span> <span class="n">train_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    <span class="n">train_losses</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
+    <span class="n">train_accuracies</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_accuracy</span><span class="p">)</span>
+    
+    <span class="c1"># Evaluate
+</span>    <span class="n">val_accuracy</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    <span class="n">val_accuracies</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_accuracy</span><span class="p">)</span>
+    
+    <span class="c1"># Print statistics
+</span>    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"  Train Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"  Train Accuracy: </span><span class="si">{</span><span class="n">train_accuracy</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"  Validation Accuracy: </span><span class="si">{</span><span class="n">val_accuracy</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="c1"># Evaluate on test set
+</span><span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Test Accuracy: </span><span class="si">{</span><span class="n">test_accuracy</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-6-plot-training-progress">Step 6: Plot Training Progress</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Plot training progress
+</span><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Plot training loss
+</span><span class="n">plt</span><span class="p">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Training Loss'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Epoch'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Loss'</span><span class="p">)</span>
+
+<span class="c1"># Plot accuracies
+</span><span class="n">plt</span><span class="p">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_accuracies</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Train'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val_accuracies</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Validation'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">test_accuracy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Test'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Accuracy'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Epoch'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Accuracy'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="step-7-save-the-fine-tuned-model">Step 7: Save the Fine-tuned Model</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Save the model
+</span><span class="n">model</span><span class="p">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s">"./vit-flowers"</span><span class="p">)</span>
+<span class="n">feature_extractor</span><span class="p">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s">"./vit-flowers"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Model saved to ./vit-flowers"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="solution-analysis-3">Solution Analysis</h3>
+
+<p>This exercise demonstrates transfer learning with Vision Transformers on a custom dataset (Flowers-102). Key aspects include:</p>
+
+<ol>
+  <li>
+    <p><strong>Parameter Freezing</strong>: By freezing the embedding layer and early transformer blocks, we leverage the pre-trained feature representations while allowing the model to adapt to the new classification task.</p>
+  </li>
+  <li>
+    <p><strong>Learning Rate Selection</strong>: Using a small learning rate (2e-5) for fine-tuning prevents catastrophic forgetting of the pre-trained knowledge.</p>
+  </li>
+  <li>
+    <p><strong>Data Augmentation</strong>: Applying random crops and flips to training images helps improve generalization, especially important when working with limited data.</p>
+  </li>
+  <li>
+    <p><strong>Performance Monitoring</strong>: Tracking both training and validation accuracy helps detect overfitting and determine the optimal number of training epochs.</p>
+  </li>
+</ol>
+
+<p>Transfer learning with ViT is particularly effective for specialized image classification tasks, as the pre-trained model has already learned general visual features that can be adapted to new domains with relatively little training data.</p>
+
+<h2 id="exercise-5-efficient-inference-with-vision-transformers">Exercise 5: Efficient Inference with Vision Transformers</h2>
+
+<p>In this exercise, you’ll learn how to optimize a Vision Transformer model for efficient inference, which is particularly important for deployment on resource-constrained environments.</p>
+
+<h3 id="step-1-setup-environment-4">Step 1: Setup Environment</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Install required libraries
+</span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">matplotlib</span> <span class="n">optimum</span> <span class="n">onnx</span> <span class="n">onnxruntime</span>
+
+<span class="c1"># Import necessary libraries
+</span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">ViTFeatureExtractor</span><span class="p">,</span> <span class="n">ViTForImageClassification</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+</code></pre></div></div>
+
+<h3 id="step-2-load-pre-trained-model-and-test-image">Step 2: Load Pre-trained Model and Test Image</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load pre-trained ViT model and feature extractor
+</span><span class="n">feature_extractor</span> <span class="o">=</span> <span class="n">ViTFeatureExtractor</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ViTForImageClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'google/vit-base-patch16-224'</span><span class="p">)</span>
+
+<span class="c1"># Move model to GPU if available
+</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">device</span><span class="p">(</span><span class="s">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="c1"># Load a sample image
+</span><span class="n">image_url</span> <span class="o">=</span> <span class="s">"http://images.cocodataset.org/val2017/000000039769.jpg"</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">))</span>
+
+<span class="c1"># Display the image
+</span><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="step-3-benchmark-standard-inference">Step 3: Benchmark Standard Inference</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Function to measure inference time
+</span><span class="k">def</span> <span class="nf">benchmark_inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">num_runs</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="c1"># Prepare image for the model
+</span>    <span class="n">inputs</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">.</span><span class="n">items</span><span class="p">()}</span>
+    
+    <span class="c1"># Warm-up run
+</span>    <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    
+    <span class="c1"># Benchmark runs
+</span>    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_runs</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
+    
+    <span class="c1"># Calculate average time
+</span>    <span class="n">avg_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_runs</span>
+    
+    <span class="c1"># Get prediction
+</span>    <span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">logits</span>
+    <span class="n">predicted_class_idx</span> <span class="o">=</span> <span class="n">logits</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="n">item</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">avg_time</span><span class="p">,</span> <span class="n">predicted_class_idx</span>
+
+<span class="c1"># Benchmark standard model
+</span><span class="n">std_time</span><span class="p">,</span> <span class="n">std_pred</span> <span class="o">=</span> <span class="n">benchmark_inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Standard model inference time: </span><span class="si">{</span><span class="n">std_time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> ms"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Predicted class: </span><span class="si">{</span><span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">id2label</span><span class="p">[</span><span class="n">std_pred</span><span class="p">]</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-4-optimize-with-torch-jit">Step 4: Optimize with Torch JIT</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Create a JIT traced model
+</span><span class="k">def</span> <span class="nf">trace_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="c1"># Prepare dummy input
+</span>    <span class="n">dummy_input</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">Image</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s">'RGB'</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)),</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+    <span class="n">dummy_input</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dummy_input</span><span class="p">.</span><span class="n">items</span><span class="p">()}</span>
+    
+    <span class="c1"># Trace the model
+</span>    <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">traced_model</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">jit</span><span class="p">.</span><span class="n">trace</span><span class="p">(</span>
+            <span class="n">model</span><span class="p">,</span> <span class="n">example_kwarg_inputs</span><span class="o">=</span><span class="n">dummy_input</span>
+        <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">traced_model</span>
+
+<span class="c1"># Trace the model
+</span><span class="n">traced_model</span> <span class="o">=</span> <span class="n">trace_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+
+<span class="c1"># Benchmark JIT traced model
+</span><span class="n">jit_time</span><span class="p">,</span> <span class="n">jit_pred</span> <span class="o">=</span> <span class="n">benchmark_inference</span><span class="p">(</span><span class="n">traced_model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"JIT traced model inference time: </span><span class="si">{</span><span class="n">jit_time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> ms"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Predicted class: </span><span class="si">{</span><span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">id2label</span><span class="p">[</span><span class="n">jit_pred</span><span class="p">]</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Speed improvement: </span><span class="si">{</span><span class="n">std_time</span><span class="o">/</span><span class="n">jit_time</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">x"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-5-quantize-the-model">Step 5: Quantize the Model</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Quantize the model to int8
+</span><span class="k">def</span> <span class="nf">quantize_model</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">quantized_model</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">quantization</span><span class="p">.</span><span class="n">quantize_dynamic</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">},</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="n">qint8</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">quantized_model</span>
+
+<span class="c1"># Try to quantize the model (note: may not work with all models)
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Move model to CPU for quantization
+</span>    <span class="n">cpu_model</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">cpu</span><span class="p">()</span>
+    
+    <span class="c1"># Quantize
+</span>    <span class="n">quantized_model</span> <span class="o">=</span> <span class="n">quantize_model</span><span class="p">(</span><span class="n">cpu_model</span><span class="p">)</span>
+    
+    <span class="c1"># Move back to original device
+</span>    <span class="n">quantized_model</span> <span class="o">=</span> <span class="n">quantized_model</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    
+    <span class="c1"># Benchmark quantized model
+</span>    <span class="n">quant_time</span><span class="p">,</span> <span class="n">quant_pred</span> <span class="o">=</span> <span class="n">benchmark_inference</span><span class="p">(</span><span class="n">quantized_model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Quantized model inference time: </span><span class="si">{</span><span class="n">quant_time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> ms"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Predicted class: </span><span class="si">{</span><span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">id2label</span><span class="p">[</span><span class="n">quant_pred</span><span class="p">]</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Speed improvement: </span><span class="si">{</span><span class="n">std_time</span><span class="o">/</span><span class="n">quant_time</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">x"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Quantization failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Dynamic quantization may not be supported for this model architecture."</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-6-export-to-onnx-format">Step 6: Export to ONNX Format</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Export model to ONNX format
+</span><span class="k">def</span> <span class="nf">export_to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">):</span>
+    <span class="c1"># Prepare dummy input
+</span>    <span class="n">dummy_input</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">Image</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s">'RGB'</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)),</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+    
+    <span class="c1"># Export to ONNX
+</span>    <span class="n">torch</span><span class="p">.</span><span class="n">onnx</span><span class="p">.</span><span class="n">export</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">dummy_input</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">],),</span>
+        <span class="s">"vit_model.onnx"</span><span class="p">,</span>
+        <span class="n">input_names</span><span class="o">=</span><span class="p">[</span><span class="s">'pixel_values'</span><span class="p">],</span>
+        <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s">'logits'</span><span class="p">],</span>
+        <span class="n">dynamic_axes</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">'pixel_values'</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">'batch_size'</span><span class="p">},</span>
+            <span class="s">'logits'</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">'batch_size'</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="n">opset_version</span><span class="o">=</span><span class="mi">12</span>
+    <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="s">"vit_model.onnx"</span>
+
+<span class="c1"># Try to export the model to ONNX
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Move model to CPU for ONNX export
+</span>    <span class="n">cpu_model</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">cpu</span><span class="p">()</span>
+    
+    <span class="c1"># Export to ONNX
+</span>    <span class="n">onnx_path</span> <span class="o">=</span> <span class="n">export_to_onnx</span><span class="p">(</span><span class="n">cpu_model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Model exported to </span><span class="si">{</span><span class="n">onnx_path</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    
+    <span class="c1"># Move model back to original device
+</span>    <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"ONNX export failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-7-inference-with-batch-processing">Step 7: Inference with Batch Processing</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Function to benchmark batch inference
+</span><span class="k">def</span> <span class="nf">benchmark_batch_inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_runs</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="c1"># Create a batch of images
+</span>    <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span><span class="p">]</span> <span class="o">*</span> <span class="n">batch_size</span>
+    
+    <span class="c1"># Prepare batch for the model
+</span>    <span class="n">inputs</span> <span class="o">=</span> <span class="n">feature_extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">.</span><span class="n">items</span><span class="p">()}</span>
+    
+    <span class="c1"># Warm-up run
+</span>    <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    
+    <span class="c1"># Benchmark runs
+</span>    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_runs</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
+    
+    <span class="c1"># Calculate average time per image
+</span>    <span class="n">avg_time_per_image</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">num_runs</span> <span class="o">*</span> <span class="n">batch_size</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">avg_time_per_image</span>
+
+<span class="c1"># Benchmark batch inference
+</span><span class="n">batch_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+<span class="n">batch_times</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">bs</span> <span class="ow">in</span> <span class="n">batch_sizes</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">avg_time</span> <span class="o">=</span> <span class="n">benchmark_batch_inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">bs</span><span class="p">)</span>
+        <span class="n">batch_times</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_time</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Batch size </span><span class="si">{</span><span class="n">bs</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">avg_time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> ms per image"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Batch size </span><span class="si">{</span><span class="n">bs</span><span class="si">}</span><span class="s"> failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">break</span>
+
+<span class="c1"># Plot batch inference results
+</span><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">batch_sizes</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">batch_times</span><span class="p">)],</span> <span class="p">[</span><span class="n">t</span><span class="o">*</span><span class="mi">1000</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">batch_times</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s">'o'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Inference Time per Image vs. Batch Size'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Batch Size'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Time per Image (ms)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="solution-analysis-4">Solution Analysis</h3>
+
+<p>This exercise demonstrates various techniques to optimize Vision Transformer models for efficient inference:</p>
+
+<ol>
+  <li>
+    <p><strong>JIT Tracing</strong>: Converting the model to TorchScript via tracing can improve inference speed by optimizing the execution graph.</p>
+  </li>
+  <li>
+    <p><strong>Quantization</strong>: Reducing the precision of model weights from 32-bit floating point to 8-bit integers can significantly decrease memory usage and improve inference speed, with minimal impact on accuracy.</p>
+  </li>
+  <li>
+    <p><strong>ONNX Export</strong>: Exporting to ONNX format allows the model to be deployed on various hardware and software platforms that support the ONNX runtime.</p>
+  </li>
+  <li>
+    <p><strong>Batch Processing</strong>: Processing multiple images in a batch can improve throughput by better utilizing hardware parallelism, though there’s a trade-off with memory usage.</p>
+  </li>
+</ol>
+
+<p>These optimization techniques are particularly important when deploying Vision Transformers in production environments or on edge devices with limited computational resources. The specific gains will vary depending on the hardware, model size, and implementation details.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>These hands-on exercises provide a comprehensive introduction to working with Vision Transformers for computer vision tasks. From basic inference with pre-trained models to fine-tuning on custom datasets, attention visualization, and optimization for efficient deployment, you’ve explored the key aspects of using ViTs in practical applications.</p>
+
+<p>Vision Transformers represent a significant advancement in computer vision, offering a different approach from traditional CNNs by leveraging self-attention mechanisms to capture global relationships in images. As demonstrated in these exercises, they can achieve excellent performance across various tasks while providing unique insights through attention visualization.</p>
+
+<p>As you continue working with Vision Transformers, remember that they typically perform best when pre-trained on large datasets and then fine-tuned for specific tasks. The transfer learning approach is particularly effective for adapting these powerful models to specialized domains with limited training data.</p>
+
+
+      </main>
+      <footer>
+        <p>&copy; 2025. All rights reserved.</p>
+      </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html> 

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Transformer Theory | Comprehensive Guide to Transformers for Computer Vision Engineers</title>
+    <link rel="stylesheet" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/css/style.css?v=">
+    <!-- MathJax support for equations -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<!-- Syntax highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<!-- Custom favicon -->
+<link rel="icon" type="image/png" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/images/favicon.png">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Transformer Theory">
+<meta property="og:description" content="A comprehensive guide covering transformer theory and applications in computer vision">
+<meta property="og:url" content="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/transformer-theory.html">
+<meta property="og:site_name" content="Comprehensive Guide to Transformers for Computer Vision Engineers">
+<meta property="og:type" content="website"> 
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Transformer Theory | Comprehensive Guide to Transformers for Computer Vision Engineers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Transformer Theory" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A comprehensive guide covering transformer theory and applications in computer vision" />
+<meta property="og:description" content="A comprehensive guide covering transformer theory and applications in computer vision" />
+<link rel="canonical" href="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/transformer-theory.html" />
+<meta property="og:url" content="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/transformer-theory.html" />
+<meta property="og:site_name" content="Comprehensive Guide to Transformers for Computer Vision Engineers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Transformer Theory" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A comprehensive guide covering transformer theory and applications in computer vision","headline":"Transformer Theory","url":"https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/transformer-theory.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/">Comprehensive Guide to Transformers for Computer Vision Engineers</a></h1>
+        <nav class="main-nav">
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/">Home</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/comprehensive">Overview</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/transformer-theory">Theory</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/transformer-applications">Applications</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/setup-instructions">Setup</a>
+          <a href="/Comprehensive-Guide-to-Transformers-for-CV/hands-on-practice">Practice</a>
+        </nav>
+      </header>
+      <main>
+        <h1 id="transformer-theory-for-computer-vision">Transformer Theory for Computer Vision</h1>
+
+<h2 id="introduction-to-transformers">Introduction to Transformers</h2>
+
+<p>Transformers have revolutionized the field of deep learning since their introduction in the 2017 paper “Attention is All You Need” by Vaswani et al. Originally designed for natural language processing (NLP) tasks, transformers have since been adapted for computer vision applications with remarkable success. This section covers the foundational theory of transformers, with a focus on their application to computer vision tasks.</p>
+
+<h2 id="the-attention-mechanism-the-core-of-transformers">The Attention Mechanism: The Core of Transformers</h2>
+
+<h3 id="self-attention-explained">Self-Attention Explained</h3>
+
+<p>The key innovation in transformer models is the self-attention mechanism, which allows the model to weigh the importance of different parts of the input data. Unlike recurrent neural networks (RNNs) or convolutional neural networks (CNNs), which process data sequentially or locally, self-attention can directly model relationships between all positions in a sequence.</p>
+
+<p>In the context of transformers, attention mechanisms serve to weigh the influence of different input tokens when producing an output. The self-attention mechanism computes a weighted sum of all tokens in a sequence, where the weights are determined by the compatibility between the query and key representations of the tokens.</p>
+
+<h3 id="scaled-dot-product-attention">Scaled Dot-Product Attention</h3>
+
+<p>The transformer implements a scaled dot-product attention, which follows these steps:</p>
+
+<ol>
+  <li>For each position in the input sequence, create three vectors: Query (Q), Key (K), and Value (V)</li>
+  <li>Calculate attention scores by taking the dot product of the query with all keys</li>
+  <li>Scale the scores by dividing by the square root of the dimension of the key vectors</li>
+  <li>Apply a softmax function to obtain the weights</li>
+  <li>Multiply each value vector by its corresponding weight and sum them to produce the output</li>
+</ol>
+
+<p>Mathematically, this is represented as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Attention(Q, K, V) = softmax(QK^T / √d_k) · V
+</code></pre></div></div>
+
+<p>Where:</p>
+<ul>
+  <li>Q, K, and V are matrices containing the queries, keys, and values</li>
+  <li>d_k is the dimension of the key vectors</li>
+  <li>The scaling factor √d_k prevents the softmax function from having extremely small gradients</li>
+</ul>
+
+<h3 id="multi-head-attention">Multi-Head Attention</h3>
+
+<p>To enhance the model’s ability to focus on different positions and representation subspaces, transformers use multi-head attention. This involves:</p>
+
+<ol>
+  <li>Linearly projecting the queries, keys, and values multiple times with different learned projections</li>
+  <li>Performing the attention function in parallel on each projection</li>
+  <li>Concatenating the results and projecting again</li>
+</ol>
+
+<p>This allows the model to jointly attend to information from different representation subspaces at different positions, providing a richer understanding of the input data.</p>
+
+<h2 id="transformer-architecture">Transformer Architecture</h2>
+
+<h3 id="overall-structure">Overall Structure</h3>
+
+<p>A transformer consists of an encoder and a decoder, each composed of multiple identical layers. Each layer has two main components:</p>
+
+<ol>
+  <li>A multi-head self-attention mechanism</li>
+  <li>A position-wise fully connected feed-forward network</li>
+</ol>
+
+<p>Additionally, each sublayer employs residual connections and layer normalization to facilitate training.</p>
+
+<h3 id="the-encoder">The Encoder</h3>
+
+<p>The encoder processes the input sequence and generates representations that capture the contextual relationships within the data. Each encoder layer consists of:</p>
+
+<ol>
+  <li>Multi-head self-attention layer: Allows each position to attend to all positions in the previous layer</li>
+  <li>Feed-forward neural network: Applied to each position separately and identically</li>
+  <li>Layer normalization and residual connections: Stabilize and accelerate training</li>
+</ol>
+
+<h3 id="the-decoder">The Decoder</h3>
+
+<p>The decoder generates the output sequence one element at a time. Each decoder layer includes:</p>
+
+<ol>
+  <li>Masked multi-head self-attention: Prevents positions from attending to subsequent positions</li>
+  <li>Multi-head attention over the encoder output: Allows the decoder to focus on relevant parts of the input sequence</li>
+  <li>Feed-forward neural network</li>
+  <li>Layer normalization and residual connections</li>
+</ol>
+
+<h3 id="positional-encoding">Positional Encoding</h3>
+
+<p>Since transformers do not inherently process sequential information, positional encodings are added to the input embeddings to provide information about the relative or absolute position of tokens in the sequence. These encodings have the same dimension as the embeddings, allowing them to be summed.</p>
+
+<h2 id="from-nlp-to-computer-vision-vision-transformers-vit">From NLP to Computer Vision: Vision Transformers (ViT)</h2>
+
+<h3 id="adapting-transformers-for-images">Adapting Transformers for Images</h3>
+
+<p>Vision Transformers (ViT) adapt the transformer architecture for image processing tasks. The key insight is to treat an image as a sequence of patches, similar to how words are treated in NLP applications.</p>
+
+<p>The process involves:</p>
+
+<ol>
+  <li>Splitting the image into fixed-size patches (typically 16×16 pixels)</li>
+  <li>Flattening each patch into a vector</li>
+  <li>Linearly projecting these vectors to obtain patch embeddings</li>
+  <li>Adding positional embeddings to retain spatial information</li>
+  <li>Processing the resulting sequence with a standard transformer encoder</li>
+</ol>
+
+<h3 id="vit-architecture-details">ViT Architecture Details</h3>
+
+<p>The Vision Transformer architecture includes:</p>
+
+<ol>
+  <li><strong>Patch Embedding</strong>: Images are divided into patches, which are linearly embedded</li>
+  <li><strong>Class Token</strong>: A learnable embedding is prepended to the sequence of embedded patches (similar to BERT’s [CLS] token)</li>
+  <li><strong>Positional Embedding</strong>: Added to the patch embeddings to retain spatial information</li>
+  <li><strong>Transformer Encoder</strong>: Standard transformer encoder blocks process the sequence</li>
+  <li><strong>MLP Head</strong>: A classification head is attached to the output of the [CLS] token for image classification tasks</li>
+</ol>
+
+<h3 id="key-differences-from-cnns">Key Differences from CNNs</h3>
+
+<p>Vision Transformers differ from traditional CNNs in several important ways:</p>
+
+<ol>
+  <li><strong>Global Processing</strong>: ViTs process the entire image globally from the first layer, whereas CNNs build global context gradually through hierarchical processing</li>
+  <li><strong>Inductive Bias</strong>: CNNs have strong inductive biases (locality, translation equivariance), while ViTs have minimal image-specific inductive biases</li>
+  <li><strong>Positional Information</strong>: CNNs implicitly encode spatial relationships, while ViTs must learn these relationships through positional embeddings</li>
+  <li><strong>Computational Efficiency</strong>: ViTs can be more computationally efficient for certain tasks, especially when pre-trained on large datasets</li>
+</ol>
+
+<h2 id="advanced-transformer-variants-for-computer-vision">Advanced Transformer Variants for Computer Vision</h2>
+
+<h3 id="swin-transformer">Swin Transformer</h3>
+
+<p>The Swin (Shifted Window) Transformer introduces hierarchical feature maps and shifted windowing to improve efficiency and performance. Key innovations include:</p>
+
+<ol>
+  <li><strong>Hierarchical Feature Maps</strong>: Merging patches progressively to create a hierarchical representation</li>
+  <li><strong>Window-based Self-Attention</strong>: Computing self-attention within local windows to reduce computational complexity</li>
+  <li><strong>Shifted Window Partitioning</strong>: Alternating between regular and shifted window partitioning to enable cross-window connections</li>
+</ol>
+
+<h3 id="deit-data-efficient-image-transformers">DeiT (Data-efficient image Transformers)</h3>
+
+<p>DeiT demonstrates that Vision Transformers can be trained effectively on smaller datasets through:</p>
+
+<ol>
+  <li><strong>Distillation Token</strong>: A specific token that learns from a teacher model (typically a CNN)</li>
+  <li><strong>Strong Data Augmentation</strong>: Techniques like RandAugment and CutMix to increase data diversity</li>
+  <li><strong>Regularization</strong>: Methods to prevent overfitting on smaller datasets</li>
+</ol>
+
+<h3 id="mobilevit">MobileViT</h3>
+
+<p>MobileViT combines the strengths of CNNs and transformers for mobile applications:</p>
+
+<ol>
+  <li><strong>Local Processing</strong>: Using convolutions for local feature extraction</li>
+  <li><strong>Global Understanding</strong>: Applying transformers for global context modeling</li>
+  <li><strong>Lightweight Design</strong>: Optimized architecture for mobile devices with limited computational resources</li>
+</ol>
+
+<h2 id="attention-mechanisms-beyond-transformers">Attention Mechanisms Beyond Transformers</h2>
+
+<h3 id="non-local-neural-networks">Non-local Neural Networks</h3>
+
+<p>Non-local neural networks capture long-range dependencies by computing the response at a position as a weighted sum of features at all positions. This is conceptually similar to self-attention but was developed independently.</p>
+
+<h3 id="squeeze-and-excitation-networks">Squeeze-and-Excitation Networks</h3>
+
+<p>Squeeze-and-Excitation networks adaptively recalibrate channel-wise feature responses by explicitly modeling interdependencies between channels, providing a form of attention over feature channels.</p>
+
+<h3 id="cbam-convolutional-block-attention-module">CBAM (Convolutional Block Attention Module)</h3>
+
+<p>CBAM combines channel and spatial attention to enhance the representational power of CNNs, focusing on “what” and “where” to attend in the feature maps.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Transformers have fundamentally changed how we approach computer vision tasks. By leveraging self-attention mechanisms, they can capture global dependencies and relationships within images more effectively than traditional architectures. Vision Transformers and their variants have demonstrated state-of-the-art performance across various computer vision tasks, from image classification to object detection and segmentation.</p>
+
+<p>The success of transformers in computer vision highlights the value of cross-pollination between different domains of deep learning. As research continues, we can expect further innovations that combine the strengths of transformers with other architectural paradigms, leading to more efficient and effective models for computer vision applications.</p>
+
+<h2 id="references">References</h2>
+
+<ol>
+  <li>
+    <p>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … &amp; Polosukhin, I. (2017). Attention is all you need. In Advances in neural information processing systems.</p>
+  </li>
+  <li>
+    <p>Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., … &amp; Houlsby, N. (2021). An image is worth 16x16 words: Transformers for image recognition at scale. In International Conference on Learning Representations.</p>
+  </li>
+  <li>
+    <p>Liu, Z., Lin, Y., Cao, Y., Hu, H., Wei, Y., Zhang, Z., … &amp; Guo, B. (2021). Swin transformer: Hierarchical vision transformer using shifted windows. In Proceedings of the IEEE/CVF International Conference on Computer Vision.</p>
+  </li>
+  <li>
+    <p>Touvron, H., Cord, M., Douze, M., Massa, F., Sablayrolles, A., &amp; Jégou, H. (2021). Training data-efficient image transformers &amp; distillation through attention. In International Conference on Machine Learning.</p>
+  </li>
+  <li>
+    <p>Mehta, S., &amp; Rastegari, M. (2021). MobileViT: Light-weight, General-purpose, and Mobile-friendly Vision Transformer. arXiv preprint arXiv:2110.02178.</p>
+  </li>
+  <li>
+    <p>Wang, X., Girshick, R., Gupta, A., &amp; He, K. (2018). Non-local neural networks. In Proceedings of the IEEE conference on computer vision and pattern recognition.</p>
+  </li>
+  <li>
+    <p>Hu, J., Shen, L., &amp; Sun, G. (2018). Squeeze-and-excitation networks. In Proceedings of the IEEE conference on computer vision and pattern recognition.</p>
+  </li>
+  <li>
+    <p>Woo, S., Park, J., Lee, J. Y., &amp; Kweon, I. S. (2018). Cbam: Convolutional block attention module. In Proceedings of the European conference on computer vision.</p>
+  </li>
+  <li>
+    <p>Alammar, J. (2018). The Illustrated Transformer. https://jalammar.github.io/illustrated-transformer/</p>
+  </li>
+  <li>
+    <p>Machine Learning Mastery. (2023). The Transformer Attention Mechanism. https://www.machinelearningmastery.com/the-transformer-attention-mechanism/</p>
+  </li>
+</ol>
+
+
+      </main>
+      <footer>
+        <p>&copy; 2025. All rights reserved.</p>
+      </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html> 
