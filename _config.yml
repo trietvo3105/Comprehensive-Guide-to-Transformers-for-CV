@@ -26,3 +26,19 @@ incremental: false
 highlighter: rouge
 gist:
     noscript: false
+
+# Exclude from processing
+exclude:
+    - "Transformer Theory for Computer Vision.md"
+    - "Transformer Applications in Computer Vision.md"
+    - "Setup Instructions for Vision Transformer Hands-on Practice.md"
+    - "Hands-on Practice with Vision Transformers.md"
+    - "Comprehensive Lecture on Transformers for Computer Vision.md"
+    - Gemfile
+    - Gemfile.lock
+    - node_modules
+    - vendor
+    - .sass-cache/
+    - .jekyll-cache/
+    - .bundle/
+    - build-local.sh

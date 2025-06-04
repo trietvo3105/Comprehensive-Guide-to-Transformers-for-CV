@@ -3,4 +3,4 @@ layout: default
 title: Transformer Applications in Computer Vision
 ---
 
-{% include_relative Transformer\ Applications\ in\ Computer\ Vision.md %}
+{% include_relative _content/applications.md %}
