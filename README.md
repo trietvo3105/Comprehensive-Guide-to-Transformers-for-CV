@@ -4,7 +4,7 @@ This repository contains a comprehensive guide on Transformer architectures for 
 
 ## Website
 
-This content is available as a website at: [https://yourusername.github.io/Comprehensive-Guide-to-Transformers-for-CV/](https://yourusername.github.io/Comprehensive-Guide-to-Transformers-for-CV/)
+This content is available as a website at: [https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/](https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/)
 
 ## Contents
 
