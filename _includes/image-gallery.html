@@ -1,0 +1,10 @@
+<div class="image-gallery">
+  {% for image in include.images %}
+    <div class="gallery-item">
+      <img src="{{ image.src }}" alt="{{ image.alt }}" />
+      {% if image.caption %}
+        <span class="image-caption">{{ image.caption }}</span>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div> 

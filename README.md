@@ -8,13 +8,30 @@ This content is available as a website at: [https://trietvo3105.github.io/Compre
 
 ## Contents
 
-1. **Transformer Theory** - Comprehensive explanation of transformer architecture, attention mechanisms, and their adaptation for computer vision tasks.
+1. **Comprehensive Overview** - A complete overview of the entire course content.
 
-2. **Transformer Applications in Computer Vision** - In-depth exploration of Vision Transformers and their applications in computer vision.
+2. **Transformer Theory** - Comprehensive explanation of transformer architecture, attention mechanisms, and their adaptation for computer vision tasks.
 
-3. **Setup Instructions** - Detailed instructions on setting up your environment for working with Vision Transformers.
+3. **Transformer Applications in Computer Vision** - In-depth exploration of Vision Transformers and their applications in computer vision.
 
-4. **Hands-on Practice** - Step-by-step exercises and solutions for working with Vision Transformers.
+4. **Setup Instructions** - Detailed instructions on setting up your environment for working with Vision Transformers.
+
+5. **Hands-on Practice** - Step-by-step exercises and solutions for working with Vision Transformers.
+
+6. **Styling Demo** - A demonstration of the various styling features available on the website.
+
+## Styling Features
+
+The website includes several custom styling features to enhance the presentation of content:
+
+-   **Image captions** - Add captions to images for better context
+-   **Image galleries** - Display multiple images in a responsive grid layout
+-   **Callout boxes** - Highlight important information, warnings, or success messages
+-   **Card layouts** - Organize content into visually distinct sections
+-   **Math equations** - Display mathematical formulas with LaTeX syntax
+-   **Responsive design** - Optimized for viewing on desktop, tablet, and mobile devices
+
+For detailed instructions on how to use these features, see the [Styling Guide](STYLING.md).
 
 ## Local Development
 
