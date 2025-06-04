@@ -17,3 +17,12 @@ plugins:
 # GitHub Pages specific settings
 github_username: trietvo3105
 repository: trietvo3105/Comprehensive-Guide-to-Transformers-for-CV
+
+# Build settings
+lsi: false
+safe: true
+source: .
+incremental: false
+highlighter: rouge
+gist:
+    noscript: false
