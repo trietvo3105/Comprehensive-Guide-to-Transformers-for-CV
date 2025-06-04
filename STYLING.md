@@ -16,6 +16,8 @@ This document provides instructions on how to use the various styling features a
 
 To add an image with a caption, use the `figure.html` include:
 
+{% raw %}
+
 ```liquid
 {% include figure.html
    src="path/to/your/image.jpg"
@@ -25,9 +27,13 @@ To add an image with a caption, use the `figure.html` include:
 %}
 ```
 
+{% endraw %}
+
 ## Image Gallery
 
 To create an image gallery, use the following code:
+
+{% raw %}
 
 ```liquid
 {% assign gallery_images = "" | split: "" %}
@@ -47,9 +53,13 @@ To create an image gallery, use the following code:
 </div>
 ```
 
+{% endraw %}
+
 ## Callout Boxes
 
 To create a callout box, use the `callout.html` include:
+
+{% raw %}
 
 ```liquid
 {% capture callout_content %}
@@ -58,7 +68,11 @@ Your content here. This can include **markdown** formatting.
 {% include callout.html content=callout_content title="Optional Title" %}
 ```
 
+{% endraw %}
+
 You can also create different types of callout boxes:
+
+{% raw %}
 
 ```liquid
 {% include callout.html content=warning_content title="Warning" type="warning" %}
@@ -66,9 +80,13 @@ You can also create different types of callout boxes:
 {% include callout.html content=danger_content title="Danger" type="danger" %}
 ```
 
+{% endraw %}
+
 ## Card Layout
 
 To create a card layout, use the `card.html` include:
+
+{% raw %}
 
 ```liquid
 {% capture card_content %}
@@ -76,6 +94,8 @@ Your content here. This can include **markdown** formatting.
 {% endcapture %}
 {% include card.html title="Card Title" content=card_content %}
 ```
+
+{% endraw %}
 
 ## Math Equations
 
