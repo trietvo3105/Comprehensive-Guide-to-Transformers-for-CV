@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Transformer Theory | Comprehensive Guide to Transformers for Computer Vision Engineers</title>
-    <link rel="stylesheet" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/css/style.css?v=842883034a8bd18649e740abd8108f9672a0c198">
+    <link rel="stylesheet" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/css/style.css?v=ba104ec3b0ab519b06b569f7a0316fb73ba22b23">
     <!-- MathJax support for equations -->
 <script type="text/javascript" async
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
@@ -17,7 +17,7 @@
 <script>hljs.highlightAll();</script>
 
 <!-- Custom favicon -->
-<link rel="icon" type="image/png" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/images/favicon.png">
+<link rel="icon" type="image/png" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/images/favicon.svg">
 
 <!-- Open Graph / Social Media Meta Tags -->
 <meta property="og:title" content="Transformer Theory">
@@ -66,9 +66,6 @@
 
 <p>The transformer architecture represents a paradigm shift in deep learning, moving away from recurrent and convolutional architectures toward a design that relies entirely on attention mechanisms. This shift has enabled models to capture long-range dependencies more effectively and process data in parallel, leading to significant improvements in performance across various tasks.</p>
 
-<p><img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/nD9oIzboE7ZZsSYxZE7ypN-images_1749049185105_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy90cmFuc2Zvcm1lcl9hcmNoaXRlY3R1cmU.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L25EOW9JemJvRTdaWnNTWXhaRTd5cE4taW1hZ2VzXzE3NDkwNDkxODUxMDVfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTkwY21GdWMyWnZjbTFsY2w5aGNtTm9hWFJsWTNSMWNtVS5wbmciLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3NjcyMjU2MDB9fX1dfQ__&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=A0hUtuWo08cLVEnNwZtesEPca7K3FLJFdZfFYG0WAWVtMqN0mD2yQe-1Nl8JufTFO4jEnAQwOJtKUoGzYHHETXa2s64hCP00iG6pc3hoChZD3CmeNMRCy5cs3ijuAm06kk-kBjtX981ZJSjKlxhSdfNx7V1MiW5E-4VHDPb1fc0pkiOV~x6T~zmIHlEJktqrRhqdEFyYhM98Fnf7UdxMTIqOt24ZDZlax~c88cC~ZLs4645gQHbX~kmDgYg7AqtAbqXlNNElVcqOTxRvjMGEGVqoCT2y-0Cr9RmCTdazRDI-65e25t9X5E3MM~IN4anBYWP1lGvW-u4myGfgQzMeug__" alt="Transformer Architecture" />
-<em>Figure 1: Complete Transformer Architecture showing the encoder-decoder structure with multiple stacked layers. The architecture includes token embeddings, positional encodings, and the distinctive multi-head attention mechanisms.</em></p>
-
 <h2 id="the-attention-mechanism-the-core-of-transformers">The Attention Mechanism: The Core of Transformers</h2>
 
 <h3 id="self-attention-explained">Self-Attention Explained</h3>
@@ -79,8 +76,10 @@
 
 <p>To understand self-attention more intuitively, consider how humans read text. When we encounter a pronoun like “it,” we naturally look back at the text to determine what “it” refers to. Similarly, self-attention allows a model to “look” at all other positions in the input to better understand the context of each position. This ability to consider the entire context simultaneously is what gives transformers their power.</p>
 
-<p><img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/nD9oIzboE7ZZsSYxZE7ypN-images_1749049185105_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy9zZWxmX2F0dGVudGlvbg.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L25EOW9JemJvRTdaWnNTWXhaRTd5cE4taW1hZ2VzXzE3NDkwNDkxODUxMDVfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTl6Wld4bVgyRjBkR1Z1ZEdsdmJnLnBuZyIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc2NzIyNTYwMH19fV19&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=coRoUl3kykyiV0yqDDeIBhwPeCa4hAt4S6~S1wiGoFEwrzyid7n2yXVPsYUS-kSvi297WQopo-~s8LtUJJ82nDYPWv3u8zuTFXVLcORGVHVq0wur-3wZZDw9LybK7rroL6Z0jZAPZgYpUZQE7bOa5~i7ANyRQ-SUhRTZDs~5HzVlIYzUFSCE6t5zxkCpV3q-6DhZthn9K9wnPdHiXOgXnhMzpJys6VIwdnJdNFZzuBsoCXm~CAInYF9nGtRJQCpKup7js-UACyGz-sMg6RZtCGT0Lw7ZweGtZupz9AOscfp1~MdAVuqPVEB87MUwDfVjJyw7e0XFMTC-JKEnlwFDMg__" alt="Self-Attention Mechanism" />
-<em>Figure 2: Self-Attention Mechanism showing how Query (Q), Key (K), and Value (V) vectors are derived from input embeddings and interact to produce weighted outputs. The Query represents “what we’re looking for,” the Key represents “what we have,” and the Value represents “what we’ll return if there’s a match.”</em></p>
+<figure>
+  <img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/BJJmvfzcsiaIHcLFqsolRy-images_1749067736062_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy9zZWxmX2F0dGVudGlvbg.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L0JKSm12Znpjc2lhSUhjTEZxc29sUnktaW1hZ2VzXzE3NDkwNjc3MzYwNjJfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTl6Wld4bVgyRjBkR1Z1ZEdsdmJnLnBuZyIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc2NzIyNTYwMH19fV19&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=kNP~RlVXJIscjP1IjUbAZeh~K7lbKgo2QXl5rCgvibU03gZ9RZNfrbr9LQ4CWWRUmA48vIULqkLgMVetNMWGu8UjLsm2eWVNCaEZ7WYIu0ENbM3mJeGKzvFloop1LTgglEkgxppsGZjBKXzeOWfuEZMNF1Kt3Y~gvJ6T84G-mV1zbOqHIu1FXNtRD3gE9yaGiJ9MhTgNs20KW6gbkqD3X~lqBHkAhhGkwc0IRuee7CeM7ZbIIsp7XmBnc6CJWKvpLyT6nEYh4GzCCrU-wSTNwqmC3Jmiv08JAwfydNFPsKOUTiWuRK-T76gDePVILYAHeHQli3CZDfpMnRaVIGMG-Q__" alt="Self-Attention Mechanism" width="500" />
+  <figcaption>Figure 2: Self-Attention Mechanism showing how Query (Q), Key (K), and Value (V) vectors are derived from input embeddings and interact to produce weighted outputs. The Query represents 'what we're looking for,' the Key represents 'what we have,' and the Value represents 'what we'll return if there's a match.'</figcaption>
+</figure>
 
 <h3 id="scaled-dot-product-attention">Scaled Dot-Product Attention</h3>
 
@@ -96,13 +95,13 @@
 
 <p>Mathematically, this is represented as:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Attention(Q, K, V) = softmax(QK^T / √d_k) · V
-</code></pre></div></div>
+\[\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) \cdot V\]
 
 <p>Where:</p>
+
 <ul>
-  <li>Q, K, and V are matrices containing the queries, keys, and values</li>
-  <li>d_k is the dimension of the key vectors</li>
+  <li>\(Q, K, V\) are matrices containing the queries, keys, and values</li>
+  <li>\(d_k\) is the dimension of the key vectors</li>
   <li>The scaling factor √d_k prevents the softmax function from having extremely small gradients</li>
 </ul>
 
@@ -122,19 +121,20 @@
 
 <p>Multi-head attention can be thought of as having multiple “representation subspaces” or “attention heads,” each focusing on different aspects of the input. For example, in language processing, one head might focus on syntactic relationships, while another might focus on semantic relationships. By combining these different perspectives, the model gains a more comprehensive understanding of the data.</p>
 
-<p><img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/nD9oIzboE7ZZsSYxZE7ypN-images_1749049185105_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy9tdWx0aV9oZWFkX2F0dGVudGlvbg.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L25EOW9JemJvRTdaWnNTWXhaRTd5cE4taW1hZ2VzXzE3NDkwNDkxODUxMDVfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTl0ZFd4MGFWOW9aV0ZrWDJGMGRHVnVkR2x2YmcucG5nIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzY3MjI1NjAwfX19XX0_&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=Am23LDikE0cLsPpumDbJgAoFnbCpI4SJtKPFzJViZyXE~D-5QLEarSpxc6oSgbTDc25LR80P2ziwR9xk4ETpJh-gQsk~zIVyNLvYL9sFERk~cjUAOtUXfybIXRemM8p4kJwVSmqE37CcRH2rONN18LHTjxnEM0ck6The96sEr6EqcQuXGiPOtdVzDNMUlUKOLyHwdJYC1tZYH-Kn6y~PlR79xgF1TWXW-QP~ZWMOEEDamKLYPD7CFuiaPRRXje6oXCw8S3Zym2sCSk4kVh9R9gibMSh9~HXDCDAMl73iO6K3YFzXhWWOnfbIDEM7JkZp570O0XZtniI7l8czhlQ~Zg__" alt="Multi-Head Attention" />
-<em>Figure 3: Multi-Head Attention architecture showing how multiple attention heads process queries, keys, and values in parallel before merging their outputs. This allows the model to capture different types of relationships simultaneously.</em></p>
+<figure>
+  <img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/BJJmvfzcsiaIHcLFqsolRy-images_1749067736062_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy9tdWx0aV9oZWFkX2F0dGVudGlvbg.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L0JKSm12Znpjc2lhSUhjTEZxc29sUnktaW1hZ2VzXzE3NDkwNjc3MzYwNjJfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTl0ZFd4MGFWOW9aV0ZrWDJGMGRHVnVkR2x2YmcucG5nIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzY3MjI1NjAwfX19XX0_&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=DM4qYVzqQQUXebq6lH6KwlOU7qqbvGctM-oetQl8WHEB8G0a41~wVMVitLEgwiRt7Qep~Lu1bu4QeqjE18AFR0~~bIq2-G2c4xv7kbL9R17ciYy-PgesWB2mouFV6-wiwpMYmy9yR48Y~NYJxB4O5~EoO0PtO4tJ1L5njUlXwY-XLoqqFIcn9kZ4tm5~I6eUBs2GGFaeL8LrxuBuRDftNN~51INdG31~LPlAYKOGehv3QgCELnpl7yu-q6e6ikvrVbPC8PRvQvpp9wrYgCpWI6IWSECi6IzsGkSTyr-zhuXEuEr4hw6w87jHq38iQTzbf4xI6eeIBqrgVKJtKXzoHg__" alt="Multi-Head Attention" width="500" />
+  <figcaption>Figure 3: Multi-Head Attention architecture showing how multiple attention heads process queries, keys, and values in parallel before merging their outputs. This allows the model to capture different types of relationships simultaneously.</figcaption>
+</figure>
 
 <p>The mathematical formulation for multi-head attention is:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MultiHead(Q, K, V) = Concat(head_1, head_2, ..., head_h) · W^O
-</code></pre></div></div>
+\[\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \text{head}_2, ..., \text{head}_h) \cdot W^O\]
 
 <p>Where:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>head_i = Attention(Q · W_i^Q, K · W_i^K, V · W_i^V)
-</code></pre></div></div>
 
-<p>And W_i^Q, W_i^K, W_i^V, and W^O are learned parameter matrices.</p>
+\[\text{head}_i = \text{Attention}(Q \cdot W_i^Q, K \cdot W_i^K, V \cdot W_i^V)\]
+
+<p>And \(W_i^Q\), \(W_i^K\), \(W_i^V\), and \(W^O\) are learned parameter matrices.</p>
 
 <h2 id="transformer-architecture">Transformer Architecture</h2>
 
@@ -149,50 +149,127 @@
 
 <p>Additionally, each sublayer employs residual connections and layer normalization to facilitate training.</p>
 
+<figure>
+  <img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/BJJmvfzcsiaIHcLFqsolRy-images_1749067736062_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy90cmFuc2Zvcm1lcl9hcmNoaXRlY3R1cmU.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L0JKSm12Znpjc2lhSUhjTEZxc29sUnktaW1hZ2VzXzE3NDkwNjc3MzYwNjJfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTkwY21GdWMyWnZjbTFsY2w5aGNtTm9hWFJsWTNSMWNtVS5wbmciLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3NjcyMjU2MDB9fX1dfQ__&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=kxNJm4zT8Z1cfJBgb79H7uHx0HqVTbvfJOAsyCr5homKi4fN795TUkAkFJMHg9UPpOQE7PMCMDGCZd4oHXwqKM35YEp~e7YQKqu2q0vvc1menH6rjZYfc6iWx8txO7JP9uuZNoJUW2lmvqe0Ftt~wbKy7fkQafoMMd8QBXA6IYcSE5yV7EIxlNSkfTjyCnyoLaa92E45SNdGF6Gmstni65L7vSl~c3DI81tI4rPDbWNBHp2ygsG7vfElAt1PzlinWxesPWkeiQJBf3gkmlGg7haUtMeDlCPTspNPltq2a2KaC9JnHiO21m6Csv2hD6X8-fe7ViH4rj3M6gAUaxdYDQ__" alt="Transformer Architecture" width="600" />
+  <figcaption>Figure 1: Complete Transformer Architecture showing the encoder-decoder structure with multiple stacked layers. The architecture includes token embeddings, positional encodings, and the distinctive multi-head attention mechanisms.</figcaption>
+</figure>
+
 <p>The transformer architecture is designed to be highly parallelizable, allowing for efficient training on modern hardware. Unlike RNNs, which process tokens sequentially, transformers can process all tokens in parallel, significantly reducing training time for large datasets.</p>
+
+<h3 id="the-feed-forward-network">The Feed-Forward Network</h3>
+
+<p>The feed-forward network is a critical component in both the encoder and decoder layers of the transformer. It processes each position independently and identically, applying the same transformation to each representation.</p>
+
+<figure>
+  <img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/BJJmvfzcsiaIHcLFqsolRy-images_1749067736062_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy9mZWVkX2ZvcndhcmRfbmV0d29yaw.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L0JKSm12Znpjc2lhSUhjTEZxc29sUnktaW1hZ2VzXzE3NDkwNjc3MzYwNjJfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTltWldWa1gyWnZjbmRoY21SZmJtVjBkMjl5YXcucG5nIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzY3MjI1NjAwfX19XX0_&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=iVMH2etXatHaCQMcFGjSpJbVJth4PMti7qL7mj4IioiTDEhVKtHDw~cjkgD092zmXi8eV6wCZVyZFJe8q5vNgGkC642rAKSbNIu2qZIHWyK4FQXq64dzREbF67CLP6ZKwMfvnX2roXwYslDFOD9TPb1SMY7JqdyvGRfaUHgOb0ovc~IaxFfgmfehDdvnVFMQRbO17zF2kzkj8iE51Gc9OWOZ76WKYI-Niu5AUzmDNUH5lrSDGdsJpy-bTa8~7EbsCBQgrvZf2WNNNuEBXpeuV80n6P0cbc~QTH8T5gW44IMfkcOFPtlo2YRBr5JmuG3PkcKa-6Al2PR-c6pFi~KNKQ__" alt="Feed-Forward Network" width="450" />
+  <figcaption>Figure 2: Position-wise Feed-Forward Network in the context of the transformer architecture. This component applies identical transformations to each position independently after the attention mechanism has captured contextual relationships.</figcaption>
+</figure>
+
+<p>This component serves several important purposes:</p>
+
+<ol>
+  <li>It adds non-linearity to the model, allowing it to learn more complex patterns</li>
+  <li>It transforms the attention-weighted representations into a form suitable for the next layer</li>
+  <li>It increases the model’s capacity by introducing additional parameters</li>
+</ol>
+
+<p>The dimensionality of the inner layer (between \(W_1\) and \(W_2\)) is typically larger than the model dimension, often by a factor of 4. This expansion and subsequent projection allow the network to capture more complex relationships before compressing the information back to the model dimension.</p>
 
 <h3 id="the-encoder">The Encoder</h3>
 
-<p>The encoder processes the input sequence and generates representations that capture the contextual relationships within the data. Each encoder layer consists of:</p>
+<p>The encoder processes the input sequence and generates representations that capture the contextual relationships within the data. It transforms the input tokens into a continuous representation that encodes the full context of the sequence.</p>
+
+<figure>
+  <img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/BJJmvfzcsiaIHcLFqsolRy-images_1749067736062_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy9lbmNvZGVyX2FyY2hpdGVjdHVyZQ.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L0JKSm12Znpjc2lhSUhjTEZxc29sUnktaW1hZ2VzXzE3NDkwNjc3MzYwNjJfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTlsYm1OdlpHVnlYMkZ5WTJocGRHVmpkSFZ5WlEucG5nIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzY3MjI1NjAwfX19XX0_&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=VRUU67bvyHWvkle5JN5z8d37TnX9ahguE7qP2BVuDuiE7i8WIbXJk9csGFtX7fSRwGL9A5N9fH0qTdJsgctiYxSnu~CscY-DOhEPyYJtk9c86DUJx~uTy0O4Vn84kZ8MWGhNm9Z0g89jL0rrRgZpSFt1LAioc-WkfE~oZorQEkhmnyQ0CRWaa3Dte9MyV6KKfiN~9qIy3MGpjQmHf~a7pTOqBX-H1u~8P5gvT7PJ0vkRxuxxNKGb~X2Ramc0XIkpfy3424XjZbaWvkUHW66xVP6RwJZZpwh9WlObiB0vRfv6c0APAP9CIAGCf~b-9Wn7AXQjkTy3A~S-EqvtwiZoyw__" alt="Encoder Architecture" width="400" />
+  <figcaption>Figure 3: Transformer Encoder Block showing the multi-head attention mechanism, position-wise feed-forward network, and the residual connections with layer normalization.</figcaption>
+</figure>
+
+<p>Each encoder layer consists of two main sub-layers:</p>
 
 <ol>
-  <li>Multi-head self-attention layer: Allows each position to attend to all positions in the previous layer</li>
-  <li>Feed-forward neural network: Applied to each position separately and identically</li>
-  <li>Layer normalization and residual connections: Stabilize and accelerate training</li>
+  <li>
+    <p><strong>Multi-Head Self-Attention Layer</strong>: This mechanism allows each position to attend to all positions in the previous layer. The self-attention operation enables the encoder to weigh the importance of different tokens when creating the representation for each position. For example, when encoding the word “bank” in the sentence “I went to the bank to deposit money,” the self-attention mechanism would give higher weight to words like “deposit” and “money” to understand that “bank” refers to a financial institution rather than a riverbank.</p>
+  </li>
+  <li>
+    <p><strong>Position-wise Feed-Forward Network</strong>: After the attention mechanism, each position passes independently through an identical feed-forward network. This network consists of two linear transformations with a ReLU activation in between:</p>
+
+\[\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2\]
+
+    <p>This component adds non-linearity to the model and allows it to transform the attention-weighted representations further.</p>
+  </li>
+  <li>
+    <p><strong>Layer Normalization and Residual Connections</strong>: Each sub-layer is wrapped with a residual connection followed by layer normalization. The residual connections (shown in red in the diagram) help with gradient flow during training, while layer normalization stabilizes the learning process by normalizing the inputs across features.</p>
+  </li>
 </ol>
 
-<p>The encoder’s self-attention mechanism allows it to create contextual representations of each input token, taking into account the entire input sequence. This is particularly valuable for tasks where understanding the relationships between different parts of the input is crucial.</p>
+<p>The encoder’s self-attention mechanism allows it to create contextual representations of each input token, taking into account the entire input sequence. This is particularly valuable for tasks where understanding the relationships between different parts of the input is crucial. Multiple encoder layers are typically stacked on top of each other, with each layer refining the representations from the previous layer.</p>
 
 <h3 id="the-decoder">The Decoder</h3>
 
-<p>The decoder generates the output sequence one element at a time. Each decoder layer includes:</p>
+<p>The decoder generates the output sequence one element at a time in an autoregressive manner. This component is responsible for transforming the encoder’s representations into the final output sequence, such as translated text in a machine translation task.</p>
+
+<figure>
+  <img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/BJJmvfzcsiaIHcLFqsolRy-images_1749067736062_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy9uZXdfZGVjb2Rlcl9hcmNoaXRlY3R1cmU.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L0JKSm12Znpjc2lhSUhjTEZxc29sUnktaW1hZ2VzXzE3NDkwNjc3MzYwNjJfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTl1WlhkZlpHVmpiMlJsY2w5aGNtTm9hWFJsWTNSMWNtVS5wbmciLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3NjcyMjU2MDB9fX1dfQ__&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=vfCYupPay0NTjry9G0P2lWBDIyD2V-0PUW4kVccrf656zFGu0T1BmqYWGiwn3Zo0fs42F8R8MROwKAaFsrlBe890S4utwjRa-XaE75aIhN1rQBECs0QeQi78s5QgO2Z78inCvpSrHnNJeFM8CaV-actJJ0c3fGtNb6VXcN40tvseY4Gp0io-FJGL1XmyrUqdWhW8Lpcr19daLvc2dan56aACG3X5NgU0E~tjZ4MNWe9XXRmXv5abwB-MqOdHYwUnDK4bCoZ2BzT2RTpVCQ2RtjBhtspH9msyNSXLlFVVMaeZwRg8fNPI91I9x9~~tmmE7mZ45KVos~syJcC2sYv8KQ__" alt="Decoder Architecture" width="400" />
+  <figcaption>Figure 4: Transformer Decoder Block showing the masked self-attention, encoder-decoder attention, and feed-forward layers with their respective normalization. Note the visual consistency with the encoder block architecture.</figcaption>
+</figure>
+
+<p>Each decoder layer includes three main sub-layers:</p>
 
 <ol>
-  <li>Masked multi-head self-attention: Prevents positions from attending to subsequent positions</li>
-  <li>Multi-head attention over the encoder output: Allows the decoder to focus on relevant parts of the input sequence</li>
-  <li>Feed-forward neural network</li>
-  <li>Layer normalization and residual connections</li>
+  <li>
+    <p><strong>Masked Multi-Head Self-Attention</strong>: This first attention mechanism operates on the decoder’s own outputs from the previous layer. The “masked” aspect is crucial - it prevents positions from attending to subsequent positions by applying a mask to the attention scores before the softmax operation. This masking ensures that predictions for position i can only depend on known outputs at positions less than i, preserving the autoregressive property necessary for generation tasks.</p>
+  </li>
+  <li>
+    <p><strong>Multi-Head Encoder-Decoder Attention</strong>: This second attention layer is what connects the decoder to the encoder. Here, queries come from the decoder’s previous layer, while keys and values come from the encoder’s output. This allows each position in the decoder to attend to all positions in the input sequence, creating a direct information pathway from input to output. This cross-attention mechanism is what allows the model to focus on relevant parts of the source sequence when generating each target token.</p>
+  </li>
+  <li>
+    <p><strong>Position-wise Feed-Forward Network</strong>: Identical to the one in the encoder, this fully connected feed-forward network applies the same transformation to each position independently.</p>
+  </li>
 </ol>
 
-<p>The decoder’s masked self-attention is a key innovation that enables autoregressive generation. By masking future positions during training, the model learns to predict the next token based only on previously generated tokens, which is essential for tasks like machine translation or text generation.</p>
+<p>Each of these sub-layers is followed by a residual connection and layer normalization, similar to the encoder. This combination helps maintain stable gradients during training and allows for deeper networks.</p>
 
-<p>The second attention layer in the decoder, which attends to the encoder’s output, creates a bridge between the input and output sequences. This allows the decoder to focus on relevant parts of the input when generating each output token.</p>
+<h4 id="decoder-operation-in-detail">Decoder Operation in Detail</h4>
+
+<p>The decoder operates sequentially during inference, generating one token at a time:</p>
+
+<ol>
+  <li>The decoder starts with a special start-of-sequence token and positional encoding.</li>
+  <li>For each new token position:</li>
+</ol>
+
+<ul>
+  <li>The masked self-attention ensures the decoder only considers previously generated tokens.</li>
+  <li>The encoder-decoder attention allows the decoder to focus on relevant parts of the input sequence.</li>
+  <li>The feed-forward network and final linear layer transform the representations into output probabilities.</li>
+  <li>The token with the highest probability is selected (or sampling is used) and added to the sequence.</li>
+  <li>This process repeats until an end-of-sequence token is generated or a maximum length is reached.</li>
+</ul>
+
+<p>The decoder’s masked self-attention is what enables autoregressive generation. By masking future positions during training, the model learns to predict the next token based only on previously generated tokens, which is essential for tasks like machine translation or text generation.</p>
+
+<p>The encoder-decoder attention mechanism serves as a dynamic, content-based alignment between input and output sequences. Unlike traditional sequence-to-sequence models with fixed attention mechanisms, this dynamic attention allows the model to adaptively focus on different parts of the input depending on what it’s currently generating, leading to more accurate and contextually appropriate outputs.</p>
 
 <h3 id="positional-encoding">Positional Encoding</h3>
 
 <p>Since transformers do not inherently process sequential information, positional encodings are added to the input embeddings to provide information about the relative or absolute position of tokens in the sequence. These encodings have the same dimension as the embeddings, allowing them to be summed.</p>
 
+<figure>
+  <img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/BJJmvfzcsiaIHcLFqsolRy-images_1749067736062_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy9wb3NpdGlvbmFsX2VuY29kaW5n.png?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L0JKSm12Znpjc2lhSUhjTEZxc29sUnktaW1hZ2VzXzE3NDkwNjc3MzYwNjJfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTl3YjNOcGRHbHZibUZzWDJWdVkyOWthVzVuLnBuZyIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc2NzIyNTYwMH19fV19&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=riN3qcgkRyFFSW8nfLppv8sniPVG-s7D9MN34inH35LEEynPa4Nqz5QxzmR5Au8OYZvWKsdEqNnbhq9Fd85Ptv-GDJOP7Td5Fww7kt3-nJYdQ-52v6rgk3x4G1xgScPT4pavuNSzmIqmNw3Pdxs1X5yUJo-9y7XwcfnKEQUqxtihyEyLO9nJf~UjGbYvkSU~BAbnWiCaAa2IJABCLBgUzP1BKxH2ObBUOBU0yI~n0xCMkGSVAC8ucw2pJs01684Rt9Arb7J22NG0aRbSeFyZvqfaQznhKzjO-OTggOq27tKrkgPIe2l2mpqJ9FI9GhTQmDk~xARmgJCWsioAUTcbxQ__" alt="Positional Encoding" width="600" />
+  <figcaption>Figure 5: Visualization of sinusoidal positional encoding showing how different dimensions use sine and cosine functions of different frequencies. This creates a unique pattern for each position that allows the model to understand sequence order.</figcaption>
+</figure>
+
 <p>The original transformer paper used sine and cosine functions of different frequencies to create these positional encodings:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PE(pos, 2i) = sin(pos / 10000^(2i/d_model))
-PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))
-</code></pre></div></div>
+\[PE(pos, 2i) = \sin(pos / 10000^{(2i/d_{\text{model}})}) \\
+PE(pos, 2i+1) = \cos(pos / 10000^{(2i/d_{\text{model}})})\]
 
 <p>Where:</p>
+
 <ul>
-  <li>pos is the position</li>
-  <li>i is the dimension</li>
-  <li>d_model is the embedding dimension</li>
+  <li>\(pos\) is the position</li>
+  <li>\(i\) is the dimension</li>
+  <li>\(d_{\text{model}}\) is the embedding dimension</li>
 </ul>
 
 <p>These encodings have the useful property that for any fixed offset k, PE(pos+k) can be represented as a linear function of PE(pos), which helps the model learn relative positions more easily.</p>
@@ -211,58 +288,109 @@ PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))
   <li>Splitting the image into fixed-size patches (typically 16×16 pixels)</li>
   <li>Flattening each patch into a vector</li>
   <li>Linearly projecting these vectors to obtain patch embeddings</li>
-  <li>Adding positional embeddings to retain spatial information</li>
-  <li>Processing the resulting sequence with a standard transformer encoder</li>
+  <li>Adding position embeddings to retain spatial information</li>
+  <li>Processing the resulting sequence through a standard transformer encoder</li>
 </ol>
 
-<p>This approach represents a significant departure from the convolutional architectures that have dominated computer vision for decades. Instead of gradually building up feature representations through a hierarchy of convolutional layers, ViT processes the entire image globally from the first layer.</p>
+<figure>
+  <img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/BJJmvfzcsiaIHcLFqsolRy-images_1749067736062_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy92aXNpb25fdHJhbnNmb3JtZXI.webp?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L0JKSm12Znpjc2lhSUhjTEZxc29sUnktaW1hZ2VzXzE3NDkwNjc3MzYwNjJfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTkyYVhOcGIyNWZkSEpoYm5ObWIzSnRaWEkud2VicCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc2NzIyNTYwMH19fV19&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=IJvLI932hA9Ky~5ARAoBXCutFbZ10YWl1IZJLhHmu2ynpThChowYqcl7YW-jZuBR2ca5TMWs1ZHQ9UWjhlmh7geNpzfkrhHVU0KS6gqVYvSf5DSL-sLFwOyD-NCF~GkXxL6W6QmBX8Jy5sskx-N2~tIznmQBUx~bUYASXUiMie376z7Ns2gVpc7CuGSWF2Lyu-KsEncAyShYmm-cHaRpgqEFRlNgQQjZjEg1r-Y5LFfqVxCF3LrS3UjSa6uq29RXmXLVVa7Lx5mfXyODFDUGOGJ88LXBIXvF~pT4i2BBVmU1LqnFhEYw-O0O-ibvWv6~CeH90WKZHCiAGANUnLV02A__" alt="Vision Transformer Architecture" width="550" />
+  <figcaption>Figure 6: Vision Transformer (ViT) architecture showing how an image is divided into patches, which are then linearly embedded, combined with position embeddings, and processed through a transformer encoder.</figcaption>
+</figure>
 
-<p><img src="https://private-us-east-1.manuscdn.com/sessionFile/FHzSFfmzQ77Pmg1AmPDaMa/sandbox/nD9oIzboE7ZZsSYxZE7ypN-images_1749049185105_na1fn_L2hvbWUvdWJ1bnR1L2ZpbmFsX2ltYWdlcy92aXNpb25fdHJhbnNmb3JtZXI.webp?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRkh6U0ZmbXpRNzdQbWcxQW1QRGFNYS9zYW5kYm94L25EOW9JemJvRTdaWnNTWXhaRTd5cE4taW1hZ2VzXzE3NDkwNDkxODUxMDVfbmExZm5fTDJodmJXVXZkV0oxYm5SMUwyWnBibUZzWDJsdFlXZGxjeTkyYVhOcGIyNWZkSEpoYm5ObWIzSnRaWEkud2VicCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc2NzIyNTYwMH19fV19&amp;Key-Pair-Id=K2HSFNDJXOU9YS&amp;Signature=S0PXFNRx31gCiyeudHeOmTq0WFSI1hSKm5cahodglvA9rldvkpkJLQqcp~5dMvNYGxrLkpBgzrXu-xogiibZXL5BQUUlTAEGB64hM1wQcSw9aE8WXq5gjQlmayra9McymFoCgPPtzqDjAqOip25hbkkpO--u1vkkDXZ~ZzsIibtlWXVH~WuPNEDVWWkuMzCUOwfVqvM2XDiqISzKkU9B9aav6WzSA7NiKnADhVVahZPSOzR7CzRv0h5yILNLeV4rMCgZqvXnVstDEXmoGk9TDk-nPkuVlQ0CyLeJzgkTzfjWnXSKO3nV2KtZssAqHu2hAKEXFR7nkjxZX9L1U4B3VA__" alt="Vision Transformer Architecture" />
-<em>Figure 4: Vision Transformer (ViT) architecture showing how an image is divided into patches, which are then linearly embedded and processed by a transformer encoder. The class token (CLS) is used for image classification tasks.</em></p>
+<p>This approach differs significantly from traditional CNN architectures, which use convolutional layers to process images hierarchically. The self-attention mechanism in transformers allows ViT to capture global dependencies directly, without the need for multiple layers of convolution and pooling to increase the receptive field.</p>
 
-<h3 id="vit-architecture-details">ViT Architecture Details</h3>
+<h3 id="the-vit-architecture-in-detail">The ViT Architecture in Detail</h3>
 
-<p>The Vision Transformer architecture includes:</p>
+<p>The Vision Transformer architecture consists of the following components:</p>
 
 <ol>
   <li>
-    <p><strong>Patch Embedding</strong>: Images are divided into patches, which are linearly embedded. This is analogous to the word embeddings in NLP transformers. For a typical implementation with 16×16 pixel patches on a 224×224 image, this results in 196 patches, each represented as a high-dimensional vector.</p>
+    <p><strong>Patch Embedding</strong>: The input image is divided into non-overlapping patches, which are then flattened and linearly projected to create patch embeddings. For example, a 224×224 pixel image divided into 16×16 patches would result in 196 patches (14×14), each represented as a vector.</p>
   </li>
   <li>
-    <p><strong>Class Token</strong>: A learnable embedding is prepended to the sequence of embedded patches (similar to BERT’s [CLS] token). This token aggregates information from the entire image and is used for classification tasks. After passing through the transformer encoder, the representation of this token is fed into a classification head to predict the image class.</p>
+    <p><strong>Class Token</strong>: A learnable embedding (CLS token) is prepended to the sequence of patch embeddings. The final representation of this token is used for image classification tasks.</p>
   </li>
   <li>
-    <p><strong>Positional Embedding</strong>: Added to the patch embeddings to retain spatial information. Unlike in NLP, where positions are one-dimensional, image patches have a two-dimensional arrangement. However, ViT typically uses a simple learnable 1D positional embedding, which works surprisingly well despite not explicitly encoding the 2D structure of images.</p>
+    <p><strong>Position Embedding</strong>: Since transformers have no inherent understanding of spatial relationships, position embeddings are added to the patch embeddings to provide information about the spatial arrangement of patches.</p>
   </li>
   <li>
-    <p><strong>Transformer Encoder</strong>: Standard transformer encoder blocks process the sequence. Each block consists of multi-head self-attention followed by a feed-forward network, with layer normalization and residual connections. The self-attention mechanism allows each patch to attend to all other patches, enabling the model to capture global relationships across the entire image.</p>
+    <p><strong>Transformer Encoder</strong>: The resulting sequence of embeddings is processed through multiple layers of a standard transformer encoder, which consists of multi-head self-attention and MLP blocks, with layer normalization and residual connections.</p>
   </li>
   <li>
-    <p><strong>MLP Head</strong>: A classification head is attached to the output of the [CLS] token for image classification tasks. This typically consists of a simple multi-layer perceptron that maps the final representation of the class token to the output classes.</p>
+    <p><strong>MLP Head</strong>: For classification tasks, final representation of the CLS token is passed through an MLP head to produce class predictions.</p>
   </li>
 </ol>
 
-<h3 id="key-differences-from-cnns">Key Differences from CNNs</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">VisionTransformer</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span> <span class="n">patch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">in_chans</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                 <span class="n">embed_dim</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">num_heads</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">mlp_ratio</span><span class="o">=</span><span class="mf">4.</span><span class="p">,</span> <span class="n">qkv_bias</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">patch_embed</span> <span class="o">=</span> <span class="n">PatchEmbed</span><span class="p">(</span><span class="n">img_size</span><span class="p">,</span> <span class="n">patch_size</span><span class="p">,</span> <span class="n">in_chans</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+        <span class="n">num_patches</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">patch_embed</span><span class="p">.</span><span class="n">num_patches</span>
 
-<p>Vision Transformers differ from traditional CNNs in several important ways:</p>
+        <span class="c1"># Create class token and position embeddings
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">cls_token</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">))</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">pos_embed</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_patches</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">))</span>
+
+        <span class="c1"># Transformer encoder
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">ModuleList</span><span class="p">([</span>
+            <span class="n">Block</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">mlp_ratio</span><span class="p">,</span> <span class="n">qkv_bias</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span>
+        <span class="p">])</span>
+
+        <span class="c1"># MLP head for classification
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">norm</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="key-innovations-in-vision-transformers">Key Innovations in Vision Transformers</h3>
+
+<p>Vision Transformers introduced several key innovations that enabled transformers to be effectively applied to computer vision tasks:</p>
 
 <ol>
   <li>
-    <p><strong>Global Processing</strong>: ViTs process the entire image globally from the first layer, whereas CNNs build global context gradually through hierarchical processing. This allows ViTs to capture long-range dependencies more directly, which can be advantageous for tasks that require understanding relationships between distant parts of an image.</p>
+    <p><strong>Patch-based Image Representation</strong>: By treating image patches as tokens, ViT adapts the transformer architecture to process visual data without significantly modifying the original transformer design.</p>
   </li>
   <li>
-    <p><strong>Inductive Bias</strong>: CNNs have strong inductive biases (locality, translation equivariance), while ViTs have minimal image-specific inductive biases. CNNs assume that nearby pixels are more related than distant ones and that patterns can appear anywhere in the image. ViTs make fewer assumptions about the structure of images, which can be both a strength and a weakness—they’re more flexible but may require more data to learn these patterns.</p>
+    <p><strong>Pre-training on Large Datasets</strong>: ViT demonstrated that with sufficient pre-training data (e.g., JFT-300M), transformers can outperform CNNs on image classification tasks without incorporating image-specific inductive biases.</p>
   </li>
   <li>
-    <p><strong>Positional Information</strong>: CNNs implicitly encode spatial relationships, while ViTs must learn these relationships through positional embeddings. The convolutional operation naturally preserves spatial information, whereas transformers must be explicitly told about the spatial arrangement of patches.</p>
-  </li>
-  <li>
-    <p><strong>Computational Efficiency</strong>: ViTs can be more computationally efficient for certain tasks, especially when pre-trained on large datasets. The self-attention mechanism scales quadratically with the number of patches, which can be a limitation for high-resolution images. However, various optimizations and hybrid approaches have been developed to address this issue.</p>
-  </li>
-  <li>
-    <p><strong>Data Requirements</strong>: ViTs typically require more training data than CNNs to achieve comparable performance when trained from scratch. This is because they lack the strong inductive biases of CNNs and must learn these patterns from data. However, when pre-trained on large datasets, ViTs can outperform CNNs on many tasks.</p>
+    <p><strong>Transfer Learning</strong>: Pre-trained ViT models can be effectively fine-tuned on smaller datasets, making them practical for a wide range of computer vision applications.</p>
   </li>
 </ol>
+
+<p>Despite their success, early Vision Transformers had some limitations:</p>
+
+<ol>
+  <li>They required large amounts of training data to achieve competitive performance compared to CNNs.</li>
+  <li>The computational complexity of self-attention (quadratic in the number of patches) limited their application to high-resolution images.</li>
+  <li>They lacked some of the inductive biases that make CNNs effective for vision tasks, such as translation equivariance and locality.</li>
+</ol>
+
+<p>These limitations have been addressed in subsequent transformer-based vision models.</p>
+
+<h3 id="advancements-beyond-basic-vit">Advancements Beyond Basic ViT</h3>
+
+<p>Since the introduction of the original Vision Transformer, numerous advancements have been made to address its limitations and improve its performance:</p>
+
+<ol>
+  <li>
+    <p><strong>Hierarchical Transformers</strong>: Models like Swin Transformer introduce a hierarchical structure with local attention windows, making them more efficient and effective for high-resolution images and dense prediction tasks.</p>
+  </li>
+  <li>
+    <p><strong>Hybrid Architectures</strong>: Combining convolutional layers with transformer blocks to leverage the strengths of both approaches, as seen in models like ConViT and CvT.</p>
+  </li>
+  <li>
+    <p><strong>Efficient Attention Mechanisms</strong>: Developing more efficient attention variants to reduce the computational complexity of self-attention, such as linear attention and sparse attention.</p>
+  </li>
+  <li>
+    <p><strong>Data-efficient Training</strong>: Techniques like DeiT (Data-efficient image Transformers) show that with appropriate training strategies, ViTs can be trained effectively on smaller datasets without extensive pre-training.</p>
+  </li>
+</ol>
+
+<p>Vision Transformers have revolutionized computer vision by demonstrating that the transformer architecture, originally designed for NLP tasks, can be highly effective for visual tasks as well. This cross-domain success has led to a convergence of techniques across modalities and inspired a new generation of models that leverage the strengths of both transformers and CNNs.</p>
+
+<p>The rapid advancement of transformer-based vision models continues to push the state-of-the-art in computer vision, with applications ranging from image classification and object detection to segmentation, video understanding, and multimodal learning.</p>
 
 <h2 id="advanced-transformer-variants-for-computer-vision">Advanced Transformer Variants for Computer Vision</h2>
 
@@ -328,16 +456,16 @@ PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))
 
 <p>The non-local operation can be expressed as:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>y_i = 1/C(x) ∑_j f(x_i, x_j) g(x_j)
-</code></pre></div></div>
+\[y_i = \frac{1}{C(x)} \sum_j f(x_i, x_j) g(x_j)\]
 
 <p>Where:</p>
+
 <ul>
-  <li>x_i is the input feature at position i</li>
-  <li>y_i is the output feature at position i</li>
-  <li>f(x_i, x_j) computes a scalar representing the relationship between positions i and j</li>
-  <li>g(x_j) computes a representation of the input at position j</li>
-  <li>C(x) is a normalization factor</li>
+  <li>\(x_i\) is the input feature at position i</li>
+  <li>\(y_i\) is the output feature at position i</li>
+  <li>\(f(x_i, x_j)\) computes a scalar representing the relationship between positions i and j</li>
+  <li>\(g(x_j)\) computes a representation of the input at position j</li>
+  <li>\(C(x)\) is a normalization factor</li>
 </ul>
 
 <p>This operation allows the model to consider all positions when computing the output for each position, capturing global context. Non-local neural networks have been successfully applied to video understanding, where capturing temporal dependencies is crucial.</p>
@@ -347,23 +475,25 @@ PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))
 <p>Squeeze-and-Excitation networks adaptively recalibrate channel-wise feature responses by explicitly modeling interdependencies between channels, providing a form of attention over feature channels.</p>
 
 <p>The SE block consists of two operations:</p>
+
 <ol>
   <li><strong>Squeeze</strong>: Global average pooling to extract channel-wise statistics</li>
   <li><strong>Excitation</strong>: A gating mechanism with two fully connected layers and a sigmoid activation to generate channel-wise attention weights</li>
 </ol>
 
 <p>Mathematically, for input feature map U:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>z = F_sq(U) = GlobalAveragePooling(U)
-s = F_ex(z) = σ(W_2 · ReLU(W_1 · z))
-Û = s · U
-</code></pre></div></div>
+
+\[z = F_{\text{sq}}(U) = \text{GlobalAveragePooling}(U) \\
+s = F_{\text{ex}}(z) = \sigma(W_2 \cdot \text{ReLU}(W_1 \cdot z)) \\
+\hat{U} = s \cdot U\]
 
 <p>Where:</p>
+
 <ul>
-  <li>z is the squeezed representation</li>
-  <li>s is the channel-wise attention weights</li>
-  <li>Û is the recalibrated feature map</li>
-  <li>W_1 and W_2 are learnable parameters</li>
+  <li>\(z\) is the squeezed representation</li>
+  <li>\(s\) is the channel-wise attention weights</li>
+  <li>\(\hat{U}\) is the recalibrated feature map</li>
+  <li>\(W_1\) and \(W_2\) are learnable parameters</li>
 </ul>
 
 <p>SE networks improve performance by allowing the model to emphasize informative features and suppress less useful ones, with minimal additional computational cost.</p>
@@ -373,21 +503,23 @@ s = F_ex(z) = σ(W_2 · ReLU(W_1 · z))
 <p>CBAM combines channel and spatial attention to enhance the representational power of CNNs, focusing on “what” and “where” to attend in the feature maps.</p>
 
 <p>CBAM consists of two sequential sub-modules:</p>
+
 <ol>
   <li><strong>Channel Attention Module</strong>: Similar to SE networks, it focuses on “what” is meaningful in the input features</li>
   <li><strong>Spatial Attention Module</strong>: Focuses on “where” to attend by generating a spatial attention map</li>
 </ol>
 
 <p>The process can be summarized as:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>F' = M_c(F) ⊗ F
-F'' = M_s(F') ⊗ F'
-</code></pre></div></div>
+
+\[F' = M_c(F) \otimes F \\
+F'' = M_s(F') \otimes F'\]
 
 <p>Where:</p>
+
 <ul>
-  <li>F is the input feature map</li>
-  <li>M_c is the channel attention map</li>
-  <li>M_s is the spatial attention map</li>
+  <li>\(F\) is the input feature map</li>
+  <li>\(M_c\) is the channel attention map</li>
+  <li>\(M_s\) is the spatial attention map</li>
   <li>⊗ represents element-wise multiplication</li>
 </ul>
 
