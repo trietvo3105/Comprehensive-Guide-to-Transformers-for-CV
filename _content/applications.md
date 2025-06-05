@@ -98,14 +98,10 @@ Several approaches have been developed to adapt transformers for video data:
 
 Transformer-based models have achieved state-of-the-art results on action recognition benchmarks like Kinetics and Something-Something:
 
-{% capture performance_metrics %}
-
 -   **MViTv2** achieves 86.1% top-1 accuracy on Kinetics-400, outperforming CNN-based approaches.
 -   **VideoMAE** uses masked autoencoding for self-supervised pre-training on video data, achieving strong results with minimal labeled data.
-    {% endcapture %}
-    {% include card.html title="Performance Metrics" content=performance_metrics %}
 
-{% include callout.html content="The self-attention mechanism in transformers can effectively capture motion patterns and temporal dependencies across frames, making them particularly effective for understanding actions and events in videos." title="Temporal Understanding" %}
+The self-attention mechanism in transformers can effectively capture motion patterns and temporal dependencies across frames, making them particularly effective for understanding actions and events in videos." title="Temporal Understanding
 
 ## Multi-Modal Vision-Language Models
 

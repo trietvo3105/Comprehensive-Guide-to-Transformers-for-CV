@@ -5,29 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
     {% include head-custom.html %}
     {% seo %}
   </head>
   <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      <header>
-        <h1><a href="{{ "/" | absolute_url }}">{{ site.title }}</a></h1>
-        <nav class="main-nav">
-          <a href="{{ site.baseurl }}/">Home</a>
-          <a href="{{ site.baseurl }}/comprehensive">Overview</a>
-          <a href="{{ site.baseurl }}/transformer-theory">Theory</a>
-          <a href="{{ site.baseurl }}/transformer-applications">Applications</a>
-          <a href="{{ site.baseurl }}/setup-instructions">Setup</a>
-          <a href="{{ site.baseurl }}/hands-on-practice">Practice</a>
-          <a href="{{ site.baseurl }}/styling-demo">Demo</a>
-        </nav>
+    <div class="site-wrapper">
+      <header class="site-header">
+        <div class="container-lg px-3 py-3">
+          <div class="header-inner">
+            <a href="{{ "/" | absolute_url }}" class="site-title">{{ site.title }}</a>
+            <nav class="main-nav">
+              <a href="{{ site.baseurl }}/">Home</a>
+              <a href="{{ site.baseurl }}/comprehensive">Overview</a>
+              <a href="{{ site.baseurl }}/transformer-theory">Theory</a>
+              <a href="{{ site.baseurl }}/transformer-applications">Applications</a>
+              <a href="{{ site.baseurl }}/setup-instructions">Setup</a>
+              <a href="{{ site.baseurl }}/hands-on-practice">Practice</a>
+              <a href="{{ site.baseurl }}/styling-demo">Demo</a>
+            </nav>
+          </div>
+        </div>
       </header>
-      <main>
-        {{ content }}
-      </main>
-      <footer>
-        <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
+      <div class="container-lg px-3 my-5 markdown-body">
+        <main>
+          {{ content }}
+        </main>
+      </div>
+      <footer class="site-footer">
+        <div class="container-lg px-3 py-3">
+          <p>&copy; {{ site.time | date: '%Y' }} {{ site.author | default: "Your Name" }}. All rights reserved.</p>
+        </div>
       </footer>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
