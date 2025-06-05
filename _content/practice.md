@@ -84,6 +84,14 @@ This exercise demonstrates how to use a pre-trained ViT model for image classifi
 
 The model's architecture divides the image into 16x16 patches, processes them through a transformer encoder, and uses the [CLS] token's output for classification. This approach allows the model to capture global relationships between different parts of the image.
 
+In Vision Transformers, the attention mechanism computes the relationship between patches using the following equation:
+
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) \cdot V
+$$
+
+Where $Q$, $K$, and $V$ are the query, key, and value matrices derived from the image patches.
+
 ## Exercise 2: Fine-tuning ViT on a Custom Dataset
 
 In this exercise, you'll fine-tune a pre-trained ViT model on the CIFAR-10 dataset.
@@ -183,26 +191,26 @@ print(f"Using device: {device}")
 def train(model, dataloader, optimizer, scheduler, device):
     model.train()
     total_loss = 0
-    
+
     for batch in dataloader:
         # Get inputs
         pixel_values = batch['pixel_values'].to(device)
         labels = batch['labels'].to(device)
-        
+
         # Zero gradients
         optimizer.zero_grad()
-        
+
         # Forward pass
         outputs = model(pixel_values=pixel_values, labels=labels)
         loss = outputs.loss
-        
+
         # Backward pass and optimize
         loss.backward()
         optimizer.step()
         scheduler.step()
-        
+
         total_loss += loss.item()
-    
+
     return total_loss / len(dataloader)
 
 # Define evaluation function
@@ -210,23 +218,23 @@ def evaluate(model, dataloader, device):
     model.eval()
     correct = 0
     total = 0
-    
+
     with torch.no_grad():
         for batch in dataloader:
             # Get inputs
             pixel_values = batch['pixel_values'].to(device)
             labels = batch['labels'].to(device)
-            
+
             # Forward pass
             outputs = model(pixel_values=pixel_values)
-            
+
             # Get predictions
             _, predicted = torch.max(outputs.logits, 1)
-            
+
             # Update statistics
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-    
+
     return correct / total
 ```
 
@@ -238,8 +246,8 @@ num_epochs = 5
 optimizer = AdamW(model.parameters(), lr=5e-5)
 total_steps = len(train_dataloader) * num_epochs
 scheduler = get_linear_schedule_with_warmup(
-    optimizer, 
-    num_warmup_steps=0, 
+    optimizer,
+    num_warmup_steps=0,
     num_training_steps=total_steps
 )
 
@@ -247,11 +255,11 @@ scheduler = get_linear_schedule_with_warmup(
 for epoch in range(num_epochs):
     # Train
     train_loss = train(model, train_dataloader, optimizer, scheduler, device)
-    
+
     # Evaluate
     train_accuracy = evaluate(model, train_dataloader, device)
     test_accuracy = evaluate(model, test_dataloader, device)
-    
+
     # Print statistics
     print(f"Epoch {epoch+1}/{num_epochs}:")
     print(f"  Train Loss: {train_loss:.4f}")
@@ -275,30 +283,30 @@ print("Model saved to ./vit-cifar10")
 def visualize_predictions(model, dataset, feature_extractor, device, num_images=5):
     model.eval()
     fig, axes = plt.subplots(1, num_images, figsize=(20, 4))
-    
+
     for i in range(num_images):
         # Get a random image
         idx = np.random.randint(0, len(dataset))
         image = dataset[idx]['img'].convert("RGB")
         label = dataset[idx]['label']
-        
+
         # Prepare image for the model
         inputs = feature_extractor(images=image, return_tensors="pt")
         inputs = {k: v.to(device) for k, v in inputs.items()}
-        
+
         # Make prediction
         with torch.no_grad():
             outputs = model(**inputs)
             logits = outputs.logits
-        
+
         # Get predicted class
         predicted_class_idx = logits.argmax(-1).item()
-        
+
         # Display image and prediction
         axes[i].imshow(image)
         axes[i].set_title(f"True: {class_names[label]}\nPred: {class_names[predicted_class_idx]}")
         axes[i].axis('off')
-    
+
     plt.tight_layout()
     plt.show()
 
@@ -374,7 +382,7 @@ inputs = {k: v.to(device) for k, v in inputs.items()}
 # Get model outputs including attention maps
 with torch.no_grad():
     outputs = model(**inputs, output_attentions=True)
-    
+
 # Get prediction
 logits = outputs.logits
 predicted_class_idx = logits.argmax(-1).item()
@@ -394,7 +402,7 @@ print("Attention map shape for first layer:", attention_maps[0].shape)
 def visualize_attention(image, attention_maps, layer_idx=11, head_idx=0):
     """
     Visualize attention for a specific layer and attention head.
-    
+
     Args:
         image: PIL Image
         attention_maps: Tuple of attention tensors from model output
@@ -403,36 +411,36 @@ def visualize_attention(image, attention_maps, layer_idx=11, head_idx=0):
     """
     # Get attention map for specified layer and head
     attention = attention_maps[layer_idx][0, head_idx].detach().cpu().numpy()
-    
+
     # We need to exclude the attention to the CLS token
     attention = attention[0, 1:]  # Shape: (num_patches)
-    
+
     # Reshape attention to match image patches
     num_patches = int(np.sqrt(attention.shape[0]))
     attention_map = attention.reshape(num_patches, num_patches)
-    
+
     # Resize image to match attention map visualization
     resized_image = image.resize((224, 224))
-    
+
     # Create figure
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(20, 5))
-    
+
     # Plot original image
     ax1.imshow(resized_image)
     ax1.set_title("Original Image")
     ax1.axis('off')
-    
+
     # Plot attention map
     ax2.imshow(attention_map, cmap='viridis')
     ax2.set_title(f"Attention Map (Layer {layer_idx+1}, Head {head_idx+1})")
     ax2.axis('off')
-    
+
     # Plot overlay
     ax3.imshow(resized_image)
     ax3.imshow(attention_map, alpha=0.5, cmap='viridis')
     ax3.set_title("Attention Overlay")
     ax3.axis('off')
-    
+
     plt.tight_layout()
     plt.show()
 
@@ -452,7 +460,7 @@ visualize_attention(image, attention_maps, layer_idx=5, head_idx=0)
 def visualize_all_heads(image, attention_maps, layer_idx=11):
     """
     Visualize attention for all heads in a specific layer.
-    
+
     Args:
         image: PIL Image
         attention_maps: Tuple of attention tensors from model output
@@ -460,29 +468,29 @@ def visualize_all_heads(image, attention_maps, layer_idx=11):
     """
     # Get attention maps for specified layer
     attention = attention_maps[layer_idx][0].detach().cpu().numpy()
-    
+
     # Number of attention heads
     num_heads = attention.shape[0]
-    
+
     # Create figure
     fig, axes = plt.subplots(2, 6, figsize=(20, 8))
     axes = axes.flatten()
-    
+
     # Plot attention for each head
     for head_idx in range(min(num_heads, 12)):
         # Get attention map for this head (excluding CLS token)
         head_attention = attention[head_idx, 0, 1:]
-        
+
         # Reshape attention to match image patches
         num_patches = int(np.sqrt(head_attention.shape[0]))
         attention_map = head_attention.reshape(num_patches, num_patches)
-        
+
         # Plot
         axes[head_idx].imshow(image.resize((224, 224)))
         axes[head_idx].imshow(attention_map, alpha=0.5, cmap='viridis')
         axes[head_idx].set_title(f"Head {head_idx+1}")
         axes[head_idx].axis('off')
-    
+
     plt.suptitle(f"Attention Maps for Layer {layer_idx+1}", fontsize=16)
     plt.tight_layout()
     plt.show()
@@ -599,7 +607,7 @@ print(f"Using device: {device}")
 # Freeze the feature extractor parameters
 for param in model.vit.embeddings.parameters():
     param.requires_grad = False
-    
+
 for i in range(8):  # Freeze first 8 layers
     for param in model.vit.encoder.layer[i].parameters():
         param.requires_grad = False
@@ -614,35 +622,35 @@ def train_epoch(model, dataloader, optimizer, scheduler, device):
     total_loss = 0
     correct = 0
     total = 0
-    
+
     for batch_idx, batch in enumerate(dataloader):
         # Get inputs
         pixel_values = batch['pixel_values'].to(device)
         labels = batch['label'].to(device)
-        
+
         # Zero gradients
         optimizer.zero_grad()
-        
+
         # Forward pass
         outputs = model(pixel_values=pixel_values, labels=labels)
         loss = outputs.loss
         logits = outputs.logits
-        
+
         # Backward pass and optimize
         loss.backward()
         optimizer.step()
         scheduler.step()
-        
+
         # Update statistics
         total_loss += loss.item()
         _, predicted = torch.max(logits, 1)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
-        
+
         # Print progress
         if (batch_idx + 1) % 10 == 0:
             print(f"  Batch {batch_idx + 1}/{len(dataloader)}, Loss: {loss.item():.4f}")
-    
+
     return total_loss / len(dataloader), correct / total
 
 # Define evaluation function
@@ -650,23 +658,23 @@ def evaluate(model, dataloader, device):
     model.eval()
     correct = 0
     total = 0
-    
+
     with torch.no_grad():
         for batch in dataloader:
             # Get inputs
             pixel_values = batch['pixel_values'].to(device)
             labels = batch['label'].to(device)
-            
+
             # Forward pass
             outputs = model(pixel_values=pixel_values)
-            
+
             # Get predictions
             _, predicted = torch.max(outputs.logits, 1)
-            
+
             # Update statistics
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-    
+
     return correct / total
 ```
 
@@ -678,8 +686,8 @@ num_epochs = 5
 optimizer = AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=2e-5)
 total_steps = len(train_dataloader) * num_epochs
 scheduler = get_linear_schedule_with_warmup(
-    optimizer, 
-    num_warmup_steps=0, 
+    optimizer,
+    num_warmup_steps=0,
     num_training_steps=total_steps
 )
 
@@ -691,16 +699,16 @@ val_accuracies = []
 # Training loop
 for epoch in range(num_epochs):
     print(f"Epoch {epoch+1}/{num_epochs}:")
-    
+
     # Train
     train_loss, train_accuracy = train_epoch(model, train_dataloader, optimizer, scheduler, device)
     train_losses.append(train_loss)
     train_accuracies.append(train_accuracy)
-    
+
     # Evaluate
     val_accuracy = evaluate(model, val_dataloader, device)
     val_accuracies.append(val_accuracy)
-    
+
     # Print statistics
     print(f"  Train Loss: {train_loss:.4f}")
     print(f"  Train Accuracy: {train_accuracy:.4f}")
@@ -814,25 +822,25 @@ def benchmark_inference(model, feature_extractor, image, device, num_runs=10):
     # Prepare image for the model
     inputs = feature_extractor(images=image, return_tensors="pt")
     inputs = {k: v.to(device) for k, v in inputs.items()}
-    
+
     # Warm-up run
     with torch.no_grad():
         _ = model(**inputs)
-    
+
     # Benchmark runs
     start_time = time.time()
     for _ in range(num_runs):
         with torch.no_grad():
             outputs = model(**inputs)
     end_time = time.time()
-    
+
     # Calculate average time
     avg_time = (end_time - start_time) / num_runs
-    
+
     # Get prediction
     logits = outputs.logits
     predicted_class_idx = logits.argmax(-1).item()
-    
+
     return avg_time, predicted_class_idx
 
 # Benchmark standard model
@@ -849,13 +857,13 @@ def trace_model(model, feature_extractor, device):
     # Prepare dummy input
     dummy_input = feature_extractor(images=Image.new('RGB', (224, 224)), return_tensors="pt")
     dummy_input = {k: v.to(device) for k, v in dummy_input.items()}
-    
+
     # Trace the model
     with torch.no_grad():
         traced_model = torch.jit.trace(
             model, example_kwarg_inputs=dummy_input
         )
-    
+
     return traced_model
 
 # Trace the model
@@ -882,13 +890,13 @@ def quantize_model(model):
 try:
     # Move model to CPU for quantization
     cpu_model = model.cpu()
-    
+
     # Quantize
     quantized_model = quantize_model(cpu_model)
-    
+
     # Move back to original device
     quantized_model = quantized_model.to(device)
-    
+
     # Benchmark quantized model
     quant_time, quant_pred = benchmark_inference(quantized_model, feature_extractor, image, device)
     print(f"Quantized model inference time: {quant_time*1000:.2f} ms")
@@ -906,7 +914,7 @@ except Exception as e:
 def export_to_onnx(model, feature_extractor):
     # Prepare dummy input
     dummy_input = feature_extractor(images=Image.new('RGB', (224, 224)), return_tensors="pt")
-    
+
     # Export to ONNX
     torch.onnx.export(
         model,
@@ -920,18 +928,18 @@ def export_to_onnx(model, feature_extractor):
         },
         opset_version=12
     )
-    
+
     return "vit_model.onnx"
 
 # Try to export the model to ONNX
 try:
     # Move model to CPU for ONNX export
     cpu_model = model.cpu()
-    
+
     # Export to ONNX
     onnx_path = export_to_onnx(cpu_model, feature_extractor)
     print(f"Model exported to {onnx_path}")
-    
+
     # Move model back to original device
     model = model.to(device)
 except Exception as e:
@@ -945,25 +953,25 @@ except Exception as e:
 def benchmark_batch_inference(model, feature_extractor, image, device, batch_size=4, num_runs=10):
     # Create a batch of images
     images = [image] * batch_size
-    
+
     # Prepare batch for the model
     inputs = feature_extractor(images=images, return_tensors="pt")
     inputs = {k: v.to(device) for k, v in inputs.items()}
-    
+
     # Warm-up run
     with torch.no_grad():
         _ = model(**inputs)
-    
+
     # Benchmark runs
     start_time = time.time()
     for _ in range(num_runs):
         with torch.no_grad():
             outputs = model(**inputs)
     end_time = time.time()
-    
+
     # Calculate average time per image
     avg_time_per_image = (end_time - start_time) / (num_runs * batch_size)
-    
+
     return avg_time_per_image
 
 # Benchmark batch inference

@@ -1,330 +1,266 @@
 # Setup Instructions for Vision Transformer Hands-on Practice
 
-This guide provides detailed setup instructions for working with Vision Transformers (ViT) in different hardware environments. Whether you have access to a GPU or are working with just a CPU, these instructions will help you get started with the hands-on exercises.
+This guide provides detailed instructions for setting up your environment to work with Vision Transformers. Whether you're using a local machine with or without a GPU, or a cloud-based solution like Google Colab, these instructions will help you get started quickly.
 
-## Option 1: Google Colab (Recommended for Users Without a GPU)
+## Environment Options
 
-Google Colab provides free access to GPU resources, making it ideal for training and fine-tuning transformer models without local GPU hardware.
+You have several options for setting up your environment:
 
-### Setting Up Google Colab
+1. **Google Colab (Recommended for beginners)**: Free access to GPUs with minimal setup
+2. **Local setup with GPU**: Fastest performance but requires compatible hardware
+3. **Local setup without GPU**: Limited to smaller models but works on any computer
+4. **Cloud-based alternatives**: Options like Kaggle Notebooks or AWS SageMaker
 
-1. **Access Google Colab**:
-   - Go to [Google Colab](https://colab.research.google.com/)
-   - Sign in with your Google account
+## Option 1: Google Colab Setup
 
-2. **Enable GPU Acceleration**:
-   - Click on "Runtime" in the menu
-   - Select "Change runtime type"
-   - Set "Hardware accelerator" to "GPU"
-   - Click "Save"
+Google Colab provides free access to GPUs and comes with many pre-installed libraries, making it ideal for beginners.
 
-3. **Verify GPU Access**:
-   - Run the following code to confirm GPU availability:
-   ```python
-   import torch
-   print("GPU available:", torch.cuda.is_available())
-   print("GPU device name:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "No GPU")
-   ```
+### Step 1: Access Google Colab
 
-4. **Install Required Libraries**:
-   - Run the following cell to install the necessary packages:
-   ```python
-   !pip install transformers datasets torch torchvision matplotlib
-   ```
+1. Go to [Google Colab](https://colab.research.google.com/)
+2. Sign in with your Google account
 
-5. **Import Libraries**:
-   ```python
-   import torch
-   import torchvision
-   from transformers import ViTFeatureExtractor, ViTForImageClassification
-   from datasets import load_dataset
-   import matplotlib.pyplot as plt
-   ```
+### Step 2: Create a New Notebook
 
-### Using Pre-made Notebooks
+1. Click on `File > New Notebook`
+2. Rename the notebook by clicking on "Untitled0" at the top
 
-For convenience, we've prepared Colab notebooks that you can use directly:
+### Step 3: Configure GPU Runtime
 
-1. **Fine-tuning ViT on CIFAR-10 with PyTorch Lightning**:
-   - Open [this notebook](https://colab.research.google.com/github/NielsRogge/Transformers-Tutorials/blob/master/VisionTransformer/Fine_tuning_the_Vision_Transformer_on_CIFAR_10_with_PyTorch_Lightning.ipynb)
-   - Make a copy to your Google Drive by clicking "File" > "Save a copy in Drive"
+{% include figure.html
+   src="https://miro.medium.com/v2/resize:fit:1400/1*Lad06lrjlU9UZgSTHUHLJA.png"
+   alt="Google Colab GPU Setup"
+   caption="Figure 1: Selecting GPU runtime in Google Colab"
+%}
 
-2. **Image Classification with Hugging Face Transformers**:
-   - Open [this notebook](https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/image_classification.ipynb)
-   - Make a copy to your Google Drive by clicking "File" > "Save a copy in Drive"
+1. Click on `Runtime > Change runtime type`
+2. Select `GPU` from the Hardware accelerator dropdown
+3. Click `Save`
 
-## Option 2: Local Setup with CPU
+Free Colab sessions have limitations:
 
-If you prefer to work locally without GPU acceleration, follow these instructions to set up your environment.
+-   Sessions timeout after 12 hours of inactivity
+-   Limited GPU usage per day
+-   Shared resources may affect performance
 
-### Prerequisites
+### Step 4: Install Required Libraries
 
-- Python 3.7 or higher
-- pip (Python package installer)
-- Basic familiarity with command line operations
+Run the following code in a cell to install the necessary libraries:
 
-### Step 1: Create a Virtual Environment
-
-Creating a virtual environment helps manage dependencies for different projects.
-
-**For Windows**:
-```bash
-# Create a new directory for your project
-mkdir transformer_practice
-cd transformer_practice
-
-# Create a virtual environment
-python -m venv venv
-
-# Activate the virtual environment
-venv\Scripts\activate
+```python
+!pip install torch torchvision tqdm matplotlib
+!pip install timm  # For Vision Transformer implementations
 ```
 
-**For macOS/Linux**:
-```bash
-# Create a new directory for your project
-mkdir transformer_practice
-cd transformer_practice
+### Step 5: Verify GPU Access
 
-# Create a virtual environment
-python3 -m venv venv
-
-# Activate the virtual environment
-source venv/bin/activate
-```
-
-### Step 2: Install Required Packages
-
-Install the necessary libraries for working with Vision Transformers:
-
-```bash
-# Upgrade pip
-pip install --upgrade pip
-
-# Install PyTorch (CPU version)
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-
-# Install Hugging Face libraries and other dependencies
-pip install transformers datasets matplotlib jupyter
-```
-
-### Step 3: Create a Jupyter Notebook
-
-```bash
-# Start Jupyter Notebook
-jupyter notebook
-```
-
-This will open a browser window. Create a new Python notebook by clicking "New" > "Python 3".
-
-### Step 4: Basic ViT Example for CPU
-
-Copy and paste the following code into your notebook to verify your setup:
+Run this code to confirm that PyTorch can access the GPU:
 
 ```python
 import torch
-from transformers import ViTFeatureExtractor, ViTForImageClassification
-from PIL import Image
-import requests
-from io import BytesIO
-
-# Download a sample image
-url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-response = requests.get(url)
-image = Image.open(BytesIO(response.content))
-
-# Load pre-trained ViT model and feature extractor
-feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224')
-model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
-
-# Prepare image for the model
-inputs = feature_extractor(images=image, return_tensors="pt")
-
-# Make prediction
-with torch.no_grad():
-    outputs = model(**inputs)
-    logits = outputs.logits
-
-# Get the predicted class
-predicted_class_idx = logits.argmax(-1).item()
-print("Predicted class:", model.config.id2label[predicted_class_idx])
-
-# Display the image
-import matplotlib.pyplot as plt
-plt.imshow(image)
-plt.axis('off')
-plt.show()
-```
-
-## Option 3: Local Setup with GPU
-
-If you have a compatible NVIDIA GPU, you can accelerate training and inference significantly.
-
-### Prerequisites
-
-- NVIDIA GPU with CUDA support
-- [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-downloads) installed
-- [NVIDIA cuDNN](https://developer.nvidia.com/cudnn) installed
-
-### Step 1: Create a Virtual Environment
-
-Follow the same steps as in Option 2 to create and activate a virtual environment.
-
-### Step 2: Install PyTorch with CUDA Support
-
-```bash
-# Upgrade pip
-pip install --upgrade pip
-
-# Install PyTorch with CUDA support (example for CUDA 11.8)
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-
-# Install Hugging Face libraries and other dependencies
-pip install transformers datasets matplotlib jupyter
-```
-
-### Step 3: Verify GPU Support
-
-Create a new Jupyter notebook and run:
-
-```python
-import torch
-
-# Check if CUDA is available
-print("CUDA available:", torch.cuda.is_available())
-
-# Print GPU information
+print(f"PyTorch version: {torch.__version__}")
+print(f"CUDA available: {torch.cuda.is_available()}")
 if torch.cuda.is_available():
-    print("GPU device name:", torch.cuda.get_device_name(0))
-    print("Number of GPUs:", torch.cuda.device_count())
+    print(f"CUDA device: {torch.cuda.get_device_name(0)}")
 ```
 
-### Step 4: Run the ViT Example with GPU Support
+## Option 2: Local Setup with GPU
 
-Modify the example from Option 2 to use GPU acceleration:
+If you have a compatible NVIDIA GPU, setting up a local environment will provide the best performance.
+
+### Step 1: Install CUDA and cuDNN
+
+1. Check your GPU compatibility at [NVIDIA's CUDA GPUs list](https://developer.nvidia.com/cuda-gpus)
+2. Download and install the appropriate CUDA version from [NVIDIA's CUDA download page](https://developer.nvidia.com/cuda-downloads)
+3. Download and install cuDNN from [NVIDIA's cuDNN page](https://developer.nvidia.com/cudnn) (requires free NVIDIA developer account)
+
+### Step 2: Create a Conda Environment
+
+1. Install [Anaconda](https://www.anaconda.com/products/individual) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+2. Open a terminal or Anaconda prompt
+3. Create a new environment:
+
+```bash
+conda create -n vit python=3.8
+conda activate vit
+```
+
+### Step 3: Install PyTorch with GPU Support
+
+```bash
+conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
+```
+
+Replace `cudatoolkit=11.3` with the version that matches your installed CUDA version. Check compatibility at [PyTorch's installation page](https://pytorch.org/get-started/locally/).
+
+### Step 4: Install Additional Libraries
+
+```bash
+pip install timm matplotlib tqdm jupyter
+```
+
+### Step 5: Verify GPU Access
+
+Launch Python and run:
 
 ```python
 import torch
-from transformers import ViTFeatureExtractor, ViTForImageClassification
-from PIL import Image
-import requests
-from io import BytesIO
-
-# Download a sample image
-url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-response = requests.get(url)
-image = Image.open(BytesIO(response.content))
-
-# Load pre-trained ViT model and feature extractor
-feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224')
-model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
-
-# Move model to GPU if available
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = model.to(device)
-print(f"Using device: {device}")
-
-# Prepare image for the model
-inputs = feature_extractor(images=image, return_tensors="pt")
-inputs = {k: v.to(device) for k, v in inputs.items()}
-
-# Make prediction
-with torch.no_grad():
-    outputs = model(**inputs)
-    logits = outputs.logits
-
-# Get the predicted class
-predicted_class_idx = logits.argmax(-1).item()
-print("Predicted class:", model.config.id2label[predicted_class_idx])
-
-# Display the image
-import matplotlib.pyplot as plt
-plt.imshow(image)
-plt.axis('off')
-plt.show()
+print(f"PyTorch version: {torch.__version__}")
+print(f"CUDA available: {torch.cuda.is_available()}")
+if torch.cuda.is_available():
+    print(f"CUDA device: {torch.cuda.get_device_name(0)}")
 ```
 
-## Memory Optimization Tips for Transformer Models
+If you're having issues with GPU detection, try the following:
 
-When working with transformer models, especially on systems with limited resources:
+1. Ensure your GPU drivers are up to date
+2. Check that CUDA and PyTorch versions are compatible
+3. Try reinstalling PyTorch with the specific CUDA version you have installed
 
-1. **Reduce Batch Size**: Start with a small batch size (e.g., 4 or 8) and increase gradually if your system can handle it.
+## Option 3: Local Setup without GPU
 
-2. **Use Mixed Precision Training**: If using a GPU with Tensor Cores (NVIDIA Volta, Turing, or Ampere architecture), enable mixed precision training:
-   ```python
-   from torch.cuda.amp import autocast, GradScaler
-   
-   scaler = GradScaler()
-   
-   # In training loop
-   with autocast():
-       outputs = model(**inputs)
-       loss = outputs.loss
-   
-   scaler.scale(loss).backward()
-   scaler.step(optimizer)
-   scaler.update()
-   ```
+If you don't have a compatible GPU, you can still run smaller models on your CPU.
 
-3. **Gradient Accumulation**: Update weights after accumulating gradients from multiple batches:
-   ```python
-   accumulation_steps = 4  # Update weights after this many batches
-   
-   # In training loop
-   with autocast():
-       outputs = model(**inputs)
-       loss = outputs.loss / accumulation_steps
-   
-   scaler.scale(loss).backward()
-   
-   if (batch_idx + 1) % accumulation_steps == 0:
-       scaler.step(optimizer)
-       scaler.update()
-       optimizer.zero_grad()
-   ```
+### Step 1: Create a Conda Environment
 
-4. **Model Pruning or Quantization**: For inference, consider using quantized models:
-   ```python
-   from transformers import AutoModelForImageClassification
-   
-   # Load quantized model
-   model = AutoModelForImageClassification.from_pretrained(
-       'google/vit-base-patch16-224',
-       quantization_config={"bits": 8}
-   )
-   ```
+1. Install [Anaconda](https://www.anaconda.com/products/individual) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+2. Open a terminal or Anaconda prompt
+3. Create a new environment:
+
+```bash
+conda create -n vit python=3.8
+conda activate vit
+```
+
+### Step 2: Install PyTorch (CPU Version)
+
+```bash
+conda install pytorch torchvision torchaudio cpuonly -c pytorch
+```
+
+### Step 3: Install Additional Libraries
+
+```bash
+pip install timm matplotlib tqdm jupyter
+```
+
+Running Vision Transformers on CPU will be significantly slower than on GPU. Consider:
+
+-   Using smaller models with fewer parameters
+-   Reducing batch sizes
+-   Processing fewer images
+-   Using pre-computed features when possible
+
+## Option 4: Cloud-based Alternatives
+
+If Google Colab doesn't meet your needs, consider these alternatives:
+
+### Kaggle Notebooks
+
+1. Create an account at [Kaggle](https://www.kaggle.com/)
+2. Go to "Notebooks" and click "New Notebook"
+3. Under "Settings", select GPU accelerator
+4. Libraries like PyTorch, torchvision, and timm are pre-installed
+
+### AWS SageMaker
+
+For more advanced users or those needing longer runtimes:
+
+1. Create an [AWS account](https://aws.amazon.com/)
+2. Navigate to SageMaker in the AWS console
+3. Create a notebook instance with GPU support (e.g., ml.p3.2xlarge)
+4. Choose a PyTorch or conda kernel
+
+## Downloading Datasets
+
+For the hands-on exercises, we'll use several datasets. Here's how to download them:
+
+The main datasets we'll be using include:
+
+1. **CIFAR-10**: A dataset of 60,000 32x32 color images in 10 classes
+2. **Flowers-102**: A dataset of 102 flower categories
+3. **ImageNet**: A subset for inference with pre-trained models
+
+These datasets are automatically downloaded by the code in our exercises, but you can also pre-download them if you prefer.
+
+### CIFAR-10
+
+```python
+import torchvision
+# This will download CIFAR-10 to ./data/cifar-10
+train_dataset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True)
+test_dataset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True)
+```
+
+### ImageNet (Subset)
+
+For exercises requiring ImageNet, we'll use a subset called ImageNette:
+
+```python
+!wget https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-320.tgz
+!tar -xzf imagenette2-320.tgz
+```
+
+## Testing Your Environment
+
+To ensure everything is set up correctly, run this simple test:
+
+```python
+import torch
+import timm
+
+# Check PyTorch and GPU
+print(f"PyTorch version: {torch.__version__}")
+print(f"CUDA available: {torch.cuda.is_available()}")
+if torch.cuda.is_available():
+    print(f"CUDA device: {torch.cuda.get_device_name(0)}")
+
+# Test loading a ViT model
+model = timm.create_model('vit_base_patch16_224', pretrained=True)
+print(f"Model loaded successfully: {model.__class__.__name__}")
+
+# Test moving model to appropriate device
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model = model.to(device)
+print(f"Model moved to: {next(model.parameters()).device}")
+```
+
+If you see the model name printed and no errors, congratulations! Your environment is set up correctly and you're ready to start working with Vision Transformers.
 
 ## Troubleshooting Common Issues
 
-### Out of Memory Errors
+### CUDA Out of Memory
 
-If you encounter CUDA out of memory errors:
-- Reduce batch size
-- Use a smaller model variant (e.g., 'google/vit-base-patch16-224' instead of 'google/vit-large-patch16-224')
-- Enable gradient accumulation
-- Use mixed precision training
+-   Reduce batch size
+-   Use a smaller model variant
+-   Try gradient accumulation
 
-### Slow Training on CPU
+### Package Conflicts
 
-If training is too slow on CPU:
-- Use a smaller dataset for experimentation
-- Reduce the number of training epochs
-- Consider using Google Colab's free GPU resources
+-   Create a fresh conda environment
+-   Install packages in the recommended order
+-   Check version compatibility between PyTorch and CUDA
 
-### Package Installation Issues
+### Import Errors
 
-If you encounter issues installing packages:
-- Ensure you're using the correct version of pip: `pip --version`
-- Try installing packages one by one to identify problematic dependencies
-- Check for compatibility between PyTorch, CUDA, and your GPU driver version
+-   Ensure you've activated the correct environment
+-   Reinstall problematic packages
+-   Check for missing dependencies
+
+### Slow Performance on GPU
+
+-   Check if PyTorch is actually using the GPU (`next(model.parameters()).device`)
+-   Update GPU drivers
+-   Close other GPU-intensive applications
 
 ## Next Steps
 
-After setting up your environment, proceed to the hands-on exercises in the next section. These exercises will guide you through:
+Now that your environment is set up, you're ready to start working with Vision Transformers! Proceed to the Hands-on Practice section to begin implementing and experimenting with these powerful models.
 
-1. Loading and preprocessing image data
-2. Fine-tuning a pre-trained Vision Transformer
-3. Evaluating model performance
-4. Using the model for inference on new images
+In the hands-on practice, you'll learn how to:
 
-Remember that while training on CPU is possible, it will be significantly slower than using a GPU. For complex models or larger datasets, we strongly recommend using Google Colab's free GPU resources or a local GPU setup if available.
+-   Load and preprocess image data
+-   Implement a basic Vision Transformer from scratch
+-   Fine-tune pre-trained ViT models
+-   Visualize attention maps
+-   Apply ViT to various computer vision tasks
