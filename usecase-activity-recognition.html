@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hands-on Practice | Comprehensive Guide to Transformers for Computer Vision Engineers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/css/style.css?v=d057974ea63fda1d646db7ea20f8cbf1195f5e9d">
+    <!-- MathJax support for equations -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<!-- Syntax highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<!-- Custom favicon -->
+<link rel="icon" type="image/png" href="/Comprehensive-Guide-to-Transformers-for-CV/assets/images/favicon.svg">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Hands-on Practice">
+<meta property="og:description" content="A comprehensive guide covering transformer theory and applications in computer vision">
+<meta property="og:url" content="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/usecase-activity-recognition.html">
+<meta property="og:site_name" content="Comprehensive Guide to Transformers for Computer Vision Engineers">
+<meta property="og:type" content="website"> 
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hands-on Practice | Comprehensive Guide to Transformers for Computer Vision Engineers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hands-on Practice" />
+<meta name="author" content="trietvo3105" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A comprehensive guide covering transformer theory and applications in computer vision" />
+<meta property="og:description" content="A comprehensive guide covering transformer theory and applications in computer vision" />
+<link rel="canonical" href="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/usecase-activity-recognition.html" />
+<meta property="og:url" content="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/usecase-activity-recognition.html" />
+<meta property="og:site_name" content="Comprehensive Guide to Transformers for Computer Vision Engineers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hands-on Practice" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"trietvo3105"},"description":"A comprehensive guide covering transformer theory and applications in computer vision","headline":"Hands-on Practice","url":"https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/usecase-activity-recognition.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+  <body>
+    <div class="site-wrapper">
+      <header class="site-header">
+        <div class="container-lg px-3 py-3">
+          <div class="header-inner">
+            <a href="https://trietvo3105.github.io/Comprehensive-Guide-to-Transformers-for-CV/" class="site-title">Comprehensive Guide to Transformers for Computer Vision Engineers</a>
+            <nav class="main-nav">
+              <a href="/Comprehensive-Guide-to-Transformers-for-CV/">Home</a>
+              <a href="/Comprehensive-Guide-to-Transformers-for-CV/comprehensive">Overview</a>
+              <a href="/Comprehensive-Guide-to-Transformers-for-CV/transformer-theory">Theory</a>
+              <a href="/Comprehensive-Guide-to-Transformers-for-CV/transformer-applications">Applications</a>
+              <a href="/Comprehensive-Guide-to-Transformers-for-CV/setup-instructions">Setup</a>
+              <a href="/Comprehensive-Guide-to-Transformers-for-CV/hands-on-practice">Practice</a>
+              <a href="/Comprehensive-Guide-to-Transformers-for-CV/usecase-activity-recognition">Use-case: Activity Recognition</a>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="container-lg px-3 my-5 markdown-body">
+        <main>
+          <h1 id="use-case-video-action-recognition">Use-case: Video Action Recognition</h1>
+
+<p>This document describes a common use-case using Vision Transformer: Video Action Recognition, or Activity Recognition.</p>
+
+<h3 id="part-1-the-landscape-of-video-action-recognition"><strong>Part 1: The Landscape of Video Action Recognition</strong></h3>
+
+<h4 id="what-is-video-action-recognition">What is Video Action Recognition?</h4>
+
+<p>At its core, video action recognition (or activity recognition) is the task of teaching a machine to identify and classify human actions in a video. It’s not just about identifying objects in each frame, but about understanding the <strong>temporal dynamics</strong>—the story that unfolds over time.</p>
+
+<p>For an image, the task is “What is in this picture?” (e.g., a person, a ball, a field).
+For a video, the task is “<strong>What is happening in this video?</strong>” (e.g., a person is <em>kicking</em> a ball into a goal).</p>
+
+<h4 id="why-is-it-important">Why is it Important?</h4>
+
+<p>It’s a cornerstone technology for many real-world applications:</p>
+
+<ul>
+  <li><strong>Public Safety &amp; Smart Surveillance:</strong> Automatically detecting falls, fights, or suspicious activities.</li>
+  <li><strong>Sports Analytics:</strong> Classifying player actions like “shooting a basketball,” “swinging a golf club,” or “scoring a goal” to generate automated highlights and performance metrics.</li>
+  <li><strong>Human-Computer Interaction:</strong> Using gestures to control devices or applications.</li>
+  <li><strong>Autonomous Vehicles:</strong> Understanding the actions of pedestrians and other vehicles (e.g., “person is about to cross the street”).</li>
+  <li><strong>Content-based Video Retrieval:</strong> Searching for videos based on their content, like “find all videos of people baking a cake.”</li>
+</ul>
+
+<h4 id="the-evolution-of-models-from-cnns-to-transformers">The Evolution of Models: From CNNs to Transformers</h4>
+
+<p>The key challenge in video is effectively combining spatial information (what’s in a frame) with temporal information (how things change between frames).</p>
+
+<ol>
+  <li>
+    <p><strong>2D CNN + RNNs:</strong> The early deep learning approach was intuitive. Use a pre-trained 2D CNN (like ResNet) to extract features from each frame independently, and then feed this sequence of features into a Recurrent Neural Network (like an LSTM or GRU) to model the temporal relationships.</p>
+
+    <ul>
+      <li><em>Limitation:</em> This separates the learning of space and time, which can be suboptimal. The CNN has no motion awareness.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>3D CNNs (C3D, I3D):</strong> This was a major leap. Instead of 2D convolutions (kernel slides over width and height), these models use <strong>3D convolutions</strong>, where the kernel slides over width, height, and <strong>time</strong>. This allows the model to learn spatio-temporal features (like motion patterns) directly from raw video pixels. The most famous model here is the <strong>Inflated 3D ConvNet (I3D)</strong>, which “inflated” successful 2D CNN architectures (like InceptionV1) into 3D.</p>
+
+    <ul>
+      <li><em>Limitation:</em> Computationally very expensive and memory-intensive due to the 3D convolutions. They also have a limited “temporal receptive field.”</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>The Transformer Revolution:</strong> Transformers, which took NLP by storm with their “attention mechanism,” proved to be a natural fit for video. A video can be seen as a sequence of frames or patches, much like a sentence is a sequence of words. Transformers can model long-range dependencies across this sequence, making them excellent for capturing complex, long-form actions.</p>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="part-2-deep-dive-into-a-key-model---videomae"><strong>Part 2: Deep Dive into a Key Model - VideoMAE</strong></h3>
+
+<p>Let’s focus on a highly influential and powerful transformer model: <strong>VideoMAE (Video Masked Autoencoders)</strong>. It represents a significant shift in how we train large video models.</p>
+
+<h4 id="the-core-idea-of-videomae">The Core Idea of VideoMAE</h4>
+
+<p>Imagine you have a jigsaw puzzle. You hide 90% of the pieces and try to figure out what the final picture is just by looking at the remaining 10%. This is incredibly hard, but if you can do it, you must have a deep understanding of how puzzle pieces (shapes, colors, patterns) fit together.</p>
+
+<p>VideoMAE does exactly this with videos. It applies a <strong>self-supervised learning</strong> strategy where the main goal is not to classify an action, but simply to <strong>reconstruct a video from a tiny, random fraction of its content.</strong></p>
+
+<h4 id="how-it-works-the-architecture">How It Works: The Architecture</h4>
+
+<p>VideoMAE has two main phases: <strong>pre-training</strong> (the self-supervised puzzle-solving) and <strong>fine-tuning</strong> (the actual action classification).</p>
+
+<p>Let’s break down the <strong>pre-training</strong> architecture:</p>
+
+<ol>
+  <li>
+    <p><strong>Video to Patches (Tubelets):</strong> A video clip is a sequence of frames. VideoMAE divides the video into a grid of non-overlapping 3D “tubelets.” Think of a standard Vision Transformer (ViT) dividing an image into 2D patches; this is the 3D equivalent. Each tubelet is a small block of pixels spanning space (height, width) and time (a few frames).</p>
+  </li>
+  <li>
+    <p><strong>Extreme Masking:</strong> This is the magic. The model randomly <strong>masks out (hides) a very high percentage of these tubelets—typically 90% to 95%!</strong> This seems crazy, but videos have immense temporal redundancy (consecutive frames are often very similar), so the model can leverage this.</p>
+  </li>
+  <li>
+    <p><strong>The Encoder:</strong> A standard Transformer encoder (like the one from ViT) is given <strong>only the visible tubelets</strong> (the remaining 5-10%). Because it processes so few inputs, the encoder is incredibly fast and memory-efficient during pre-training. It processes these visible tubelets and outputs a set of feature-rich representations.</p>
+  </li>
+  <li>
+    <p><strong>The Decoder:</strong> Now, the full sequence is reconstructed. The encoded representations of the visible tubelets are put back in their original positions, and special shared <code class="language-plaintext highlighter-rouge">[MASK]</code> tokens are inserted for all the missing tubelets. This complete sequence is fed into a <strong>lightweight Transformer decoder</strong>.</p>
+  </li>
+  <li>
+    <p><strong>The Goal (Reconstruction):</strong> The decoder’s job is to use the context from the visible patches to predict the original pixel values of all the masked-out tubelets. The model’s performance is measured by how close its reconstruction is to the original (e.g., using Mean Squared Error).</p>
+  </li>
+</ol>
+
+<figure>
+  <img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformers/model_doc/videomae_architecture.jpeg" alt="VideoMAE Architecture Diagram" width="1000" />
+  <figcaption>VideoMAE Architecture Diagram.</figcaption>
+</figure>
+
+<h4 id="why-is-videomae-so-good">Why is VideoMAE so Good?</h4>
+
+<ol>
+  <li>
+    <p><strong>Incredibly Data-Efficient (Self-Supervised):</strong> The biggest bottleneck in deep learning is the need for massive, human-labeled datasets. VideoMAE’s pre-training is <strong>self-supervised</strong>, meaning it learns from <strong>unlabeled videos</strong>. You can feed it terabytes of raw video from anywhere without needing to pay anyone to label “playing basketball” a million times. This allows it to learn rich, general-purpose visual representations.</p>
+  </li>
+  <li>
+    <p><strong>Computationally Efficient Pre-training:</strong> By only feeding 5-10% of the video tubelets to the heavy encoder, it drastically reduces the computational load and training time compared to a 3D CNN or a standard transformer that processes the whole video.</p>
+  </li>
+  <li>
+    <p><strong>Learns Meaningful Representations:</strong> To reconstruct a masked part of a video (e.g., a person’s moving leg), the model can’t just copy nearby pixels. It must learn a higher-level understanding of both <strong>appearance</strong> (what a leg looks like) and <strong>motion</strong> (how a leg moves when kicking). This forces it to learn the semantics of the visual world.</p>
+  </li>
+</ol>
+
+<h4 id="how-it-is-trained">How It Is Trained</h4>
+
+<ol>
+  <li>
+    <p><strong>Pre-training Phase (Self-Supervised):</strong></p>
+
+    <ul>
+      <li><strong>Dataset:</strong> A massive, <em>unlabeled</em> video dataset (e.g., Kinetics-710, Something-Something V2, or even a custom dataset of unlabeled videos).</li>
+      <li><strong>Task:</strong> Reconstruct the masked tubelets.</li>
+      <li><strong>Loss Function:</strong> Mean Squared Error (MSE) between the predicted pixels and the original pixels.</li>
+      <li><strong>Result:</strong> A powerful <strong>encoder</strong> that understands video. The decoder is thrown away after this phase.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Fine-tuning Phase (Supervised):</strong></p>
+    <ul>
+      <li><strong>Dataset:</strong> A smaller, <em>labeled</em> dataset for the specific task (e.g., Kinetics-400 for general action classification, UCF101, or your own custom action dataset).</li>
+      <li><strong>Process:</strong>
+        <ul>
+          <li>Take the pre-trained VideoMAE encoder.</li>
+          <li>Remove the decoder.</li>
+          <li>Attach a simple classification head (e.g., a single linear layer) to the output.</li>
+        </ul>
+      </li>
+      <li><strong>Task:</strong> Classify the action in the video.</li>
+      <li><strong>Loss Function:</strong> Standard Cross-Entropy Loss for classification.</li>
+      <li><strong>Result:</strong> A specialized, high-performance action recognition model.</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="how-to-use-a-pre-trained-videomae-model">How to Use a Pre-trained VideoMAE Model</h4>
+
+<p>Thanks to the Hugging Face <code class="language-plaintext highlighter-rouge">transformers</code> library, using a pre-trained VideoMAE is straightforward. Let’s classify a sample video.</p>
+
+<p><strong>Step 1: Install Libraries and Set Up</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>transformers torch torchvision torchaudio
+pip <span class="nb">install</span> <span class="s2">"iopath"</span> <span class="s2">"av"</span> <span class="c"># For video reading</span>
+</code></pre></div></div>
+
+<p><strong>Step 2: Python Code for Inference</strong></p>
+
+<p>This example uses a model fine-tuned on the Kinetics-400 dataset.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">av</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">VideoMAEImageProcessor</span><span class="p">,</span> <span class="n">VideoMAEForVideoClassification</span>
+
+<span class="c1"># Helper function to read video frames
+</span><span class="k">def</span> <span class="nf">read_video_pyav</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+    <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">container</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">frame</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">container</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">video</span><span class="o">=</span><span class="mi">0</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
+            <span class="n">frames</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">frame</span><span class="p">.</span><span class="n">to_ndarray</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s">"rgb24"</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">stack</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+
+<span class="c1"># A sample video URL (replace with your video file path if needed)
+</span><span class="n">video_path</span> <span class="o">=</span> <span class="s">"http://images.cocodataset.org/val2017/000000039769.jpg"</span> <span class="c1"># This is an image, let's find a video
+# Let's use a standard test video from hugging face space
+</span><span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">video_path</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
+    <span class="n">repo_id</span><span class="o">=</span><span class="s">"nielsr/video-demo"</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s">"eating_spaghetti.mp4"</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="s">"dataset"</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Load the pre-trained processor and model
+</span><span class="n">processor</span> <span class="o">=</span> <span class="n">VideoMAEImageProcessor</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">"MCG-NJU/videomae-base-finetuned-kinetics"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">VideoMAEForVideoClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">"MCG-NJU/videomae-base-finetuned-kinetics"</span><span class="p">)</span>
+
+<span class="c1"># Open the video file
+</span><span class="n">container</span> <span class="o">=</span> <span class="n">av</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">video_path</span><span class="p">)</span>
+<span class="n">num_frames</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">num_frames</span> <span class="c1"># The model expects 16 frames
+</span>
+<span class="c1"># Sample 16 frames evenly from the video
+</span><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">container</span><span class="p">.</span><span class="n">streams</span><span class="p">.</span><span class="n">video</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">frames</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_frames</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">frames</span> <span class="o">=</span> <span class="n">read_video_pyav</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+
+<span class="c1"># Process the video and prepare for the model
+# The processor handles normalization, resizing, etc.
+</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">processor</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">frames</span><span class="p">),</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+
+<span class="c1"># Perform inference
+</span><span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">logits</span>
+
+<span class="c1"># Get the predicted class ID
+</span><span class="n">predicted_class_idx</span> <span class="o">=</span> <span class="n">logits</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="n">item</span><span class="p">()</span>
+
+<span class="c1"># Map the ID to the human-readable class name
+</span><span class="n">predicted_label</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">id2label</span><span class="p">[</span><span class="n">predicted_class_idx</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Predicted action: </span><span class="si">{</span><span class="n">predicted_label</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="c1"># Expected output for this video: 'eating spaghetti'
+</span></code></pre></div></div>
+
+<h3 id="summary">Summary</h3>
+
+<p>You’ve now seen the whole pipeline:</p>
+
+<ul>
+  <li><strong>The Problem:</strong> Understanding actions in videos, which requires modeling space and time.</li>
+  <li><strong>The Evolution:</strong> From 2D+RNNs to 3D CNNs, leading to Transformers.</li>
+  <li><strong>A State-of-the-Art Model (VideoMAE):</strong> It uses a clever self-supervised “puzzle-solving” task (masked autoencoding) to learn powerful video representations from unlabeled data efficiently.</li>
+  <li><strong>Practical Use:</strong> We can easily load a pre-trained and fine-tuned VideoMAE from Hugging Face to classify actions in our own videos with just a few lines of code.</li>
+</ul>
+
+<p>The field is moving incredibly fast, but understanding a foundational and efficient model like VideoMAE gives you a fantastic starting point for exploring more advanced architectures. This is a great time to jump in! Let me know what you’d like to explore next.</p>
+
+
+        </main>
+      </div>
+      <footer class="site-footer">
+        <div class="container-lg px-3 py-3">
+          <p>&copy; 2025 trietvo3105. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html> 
